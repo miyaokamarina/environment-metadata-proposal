@@ -12,6 +12,8 @@ PragmaStatement :
 
 ## Built-in pragmas
 
+## Custom pragmas
+
 ## Abstract operations
 
 ## Changes to Runtime Semantics

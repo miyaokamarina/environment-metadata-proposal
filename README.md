@@ -1,7 +1,5 @@
 # Custom metadata for lexical environments
 
-## The problem
-
 ## Case studies
 
 ## New Other Properties of the Global Object

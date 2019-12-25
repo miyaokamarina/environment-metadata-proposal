@@ -186,7 +186,7 @@ performs the following steps:
 2.  Else, 1. Let _thisValue_ be **undefined**.
 3.  `+` Let _callSiteEnv_ be running execution context's Lexical Environment.
 4.  `+` Let _callSiteEnvRec_ be _callSiteEnv_'s Environment Record.
-5.  Let _argList_ be ? ArgumentListEvaluation of arguments.
+5.  Let _argList_ be ? ArgumentListEvaluation of _arguments_.
 6.  If Type(_func_) is not Object, throw a **TypeError** exception.
 7.  If IsCallable(_func_) is **false**, throw a **TypeError** exception.
 8.  If _tailPosition_ is **true**, perform PrepareForTailCall().

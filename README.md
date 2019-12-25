@@ -143,9 +143,15 @@ The functionality of withdrawn Zones proposal may be implemented using this API.
 
 ## Changes to Runtime Semantics
 
-### 7.3.12 Call ( F, V, env \[ , argumentsList ] )
+### 7.3.12 Call ( _F_, _V_, _env_ \[ , _argumentsList_ ] )
 
-### 12.3.6.2 EvaluateCall ( func, ref, arguments, tailPosition, env )
+The abstract operation Call is used to call the [[Call]] internal method of a function object. The operation is called with arguments _F_, _V_, _env_, and optionally _argumentsList_ where _F_ is the function object, _V_ is an ECMAScript language value that is the **this** value of the [[Call]], and _argumentsList_ is the value passed to the corresponding argument of the internal method. If _argumentsList_ is not present, a new empty List is used as its value. This abstract operation performs the following steps:
+
+1. If _argumentsList_ is not present, set _argumentsList_ to a new empty List.
+2. If IsCallable(_F_) is **false**, throw a **TypeError** exception.
+2. Return ? _F_.[[Call]](_V_, _argumentsList_).
+
+### 12.3.6.2 EvaluateCall ( _func_, _ref_, _arguments_, _tailPosition_, _env_ )
 
 The abstract operation EvaluateCall takes as arguments a value _func_, a value _ref_, a Parse Node _arguments_, a Boolean argument _tailPosition_, and an Environment Record _env_. It performs the following steps:
 

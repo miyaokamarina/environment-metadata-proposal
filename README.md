@@ -10,12 +10,12 @@ declare const LexicalMetadata: {
     readonly delete: (key: unknown) => void;
 };
 
-// env0 = new ModuleEnvironment
+// env0 = NewModuleEnvironment(...)
 LexicalMetadata.set('x', 'a');
 
 function f() {
     // callSiteEnv implcitly received from call site
-    // env1 = new FunctionEnvironment
+    // env1 = NewFunctionEnvironment(f, undefined)
     // env1.[[Parent]] = env0
     // env1.[[CallSiteEnv]] = callSiteEnv // env2
 
@@ -29,7 +29,7 @@ function f() {
 
 function g() {
     // callSiteEnv implcitly received from call site
-    // env2 = new FunctionEnvironment
+    // env2 = NewFunctionEnvironment(g, undefined)
     // env2.[[Parent]] = env0
     // env2.[[CallSiteEnv]] = callSiteEnv // env3
 
@@ -39,7 +39,7 @@ function g() {
 
 function h() {
     // callSiteEnv implcitly received from call site
-    // env3 = new FunctionEnvironment
+    // env3 = NewFunctionEnvironment(h, undefined)
     // env3.[[Parent]] = env0
     // env3.[[CallSiteEnv]] = callSiteEnv // env0
     LexicalMetadata.set('x', 'b');

@@ -1,5 +1,7 @@
 # Custom metadata for lexical environments
 
+## The problem
+
 ## New Other Properties of the Global Object
 
 ### `LexicalMetadata`

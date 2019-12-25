@@ -161,10 +161,10 @@ The abstract operation Call is used to call the [[Call]] internal method of a
 function object. The operation is called with arguments _F_, _V_,
 _callSiteEnvRec_, and optionally _argumentsList_ where _F_ is the function
 object, _V_ is an ECMAScript language value that is the **this** value of the
-[[Call]], _envRec_ is a call-site Environment Record, and _argumentsList_ is the
-value passed to the corresponding argument of the internal method. If
-_argumentsList_ is not present, a new empty List is used as its value. This
-abstract operation performs the following steps:
+[[Call]], _callSiteEnvRec_ is a call-site's Environment Record, and
+_argumentsList_ is the value passed to the corresponding argument of the
+internal method. If _argumentsList_ is not present, a new empty List is used as
+its value. This abstract operation performs the following steps:
 
 1. If _argumentsList_ is not present, set _argumentsList_ to a new empty List.
 2. If IsCallable(_F_) is **false**, throw a **TypeError** exception.

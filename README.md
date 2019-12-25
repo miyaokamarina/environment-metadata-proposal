@@ -60,13 +60,13 @@ console.log(h());
 
 ## New Abstract Methods of the Environment Record
 
-### `SetLexicalMetadata`
+### `SetLexicalMetadata(key, value)`
 
-### `HasLexicalMetadata`
+### `HasLexicalMetadata(key)`
 
-### `GetLexicalMetadata`
+### `GetLexicalMetadata(key)`
 
-### `DeleteLexicalMetadata`
+### `DeleteLexicalMetadata(key)`
 
 ## Changes to Runtime Semantics
 

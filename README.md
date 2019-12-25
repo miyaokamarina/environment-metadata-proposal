@@ -1,55 +1,47 @@
 # Custom metadata for Lexical Environments
 
-## Quick example
+> May be attached to Lexical Environment
 
-```typescript
-declare const LexicalMetadata: {
-    readonly set: (key: unknown, value?: unknown) => void;
-    readonly has: (key: unknown) => boolean;
-    readonly get: (key: unknown) => unknown;
-    readonly delete: (key: unknown) => void;
+## Minimal example
+
+`a.js`:
+
+```javascript
+// let rec = LexicalEnvironment.EnvironmentRecord
+// rec.[[CalleeMetadata]] here is {}
+
+import { b } from './b.js';
+
+LexicalMetadata.set('answer', 42);
+// rec.[[CalleeMetadata]].set('answer', 42)
+
+b(); // 42
+// b’s [[CallerMetadata]] is set to {
+//     ...rec.[[CalleeMetadata]],
+//     [[Parent]]: rec.[[CallerMetadata]], // `null`
+// } in PrepareForOrdinaryCall.
+```
+
+`b.js`:
+
+```javascript
+// let rec = LexicalEnvironment.EnvironmentRecord
+// rec.[[CalleeMetadata]] here is {}
+
+export const b = () => {
+    // let rec = LecicalEnvironment.EnvironmentRecord
+    // rec.[[CalleeMetadata]] here is {}
+    // rec.[[CallerMetadata]] here is { 'answer': 42, [[Parent]]: null }
+
+    return LexicalMetadata.get('answer');
+    // for (let caller = rec.[[CallerMetadata]]; caller !== null; caller = caller.[[Parent]])
+    //     if ('answer' in caller)
+    //         return caller.answer
+    // for (let env = LexicalEnvironment; env !== null; env = env.outer)
+    //     if ('answer' in env.EnvironmentRecord.[[CalleeMetadata]])
+    //         return env.EnvironmentRecord.[[CalleeMetadata]].answer
+    // return undefined
 };
-
-// env0 = NewModuleEnvironment(...)
-LexicalMetadata.set('x', 'a');
-
-function f() {
-    // callSiteEnv implcitly received from call site
-    // env1 = NewFunctionEnvironment(f, undefined)
-    // env1.[[Parent]] = env0
-    // env1.[[CallSiteEnv]] = callSiteEnv // env2
-
-    return LexicalMetadata.get('x');
-    // 1. Lookup in `env1`’s `[[CallSiteEnv]]` chain.
-    // 2. If no metadata for the `'x'` key found in this chain, Then
-    // 3.     Lookup in `env1`’s `[[Parent]]` chain.
-    // 4. If still no metadata for the `'x'` key found, Then
-    // 5. return `undefined`.
-}
-
-function g() {
-    // callSiteEnv implcitly received from call site
-    // env2 = NewFunctionEnvironment(g, undefined)
-    // env2.[[Parent]] = env0
-    // env2.[[CallSiteEnv]] = callSiteEnv // env3
-
-    // `env2` implicitly passed to `f` as callSiteEnv
-    f();
-}
-
-function h() {
-    // callSiteEnv implcitly received from call site
-    // env3 = NewFunctionEnvironment(h, undefined)
-    // env3.[[Parent]] = env0
-    // env3.[[CallSiteEnv]] = callSiteEnv // env0
-    LexicalMetadata.set('x', 'b');
-
-    // `env3` implicitly passed to `g` as callSiteEnv
-    return g(); // should return `'b'`
-}
-
-// `env0` implicitly passed to `h` as callSiteEnv
-console.log(h());
 ```
 
 ## Use cases
@@ -155,18 +147,4 @@ The functionality of withdrawn Zones proposal may be implemented using this API.
 
 ## Changes to Runtime Semantics
 
-### 7.3.12 Call ( _F_, _V_, \[ , _argumentsList_ ] )
-
-The abstract operation Call is used to call the \[\[Call]] internal method of a
-function object. The operation is called with arguments _F_, _V_, and optionally
-_argumentsList_ where _F_ is the function object, _V_ is an ECMAScript language
-value that is the **this** value of the \[\[Call]], and _argumentsList_ is the
-value passed to the corresponding argument of the internal method. If
-_argumentsList_ is not present, a new empty List is used as its value. This
-abstract operation performs the following steps:
-
-1. If _argumentsList_ is not present, set _argumentsList_ to a new empty List.
-2. If IsCallable(_F_) is **false**, throw a **TypeError** exception.
-3. <ins>Let _envRec_ be Lexical Environment's EnvironmentRecord.</ins>
-4. <ins>Set _envRec_.\[\[CallSiteEnvironmentRecord]] to _callSiteEnvRec_.</ins>
-5. Return ? _F_.\[\[Call]](_V_, _argumentsList_).
+### 9.2.1.1 PrepareForOrdinaryCall ( _F_, _newTarget_ )

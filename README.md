@@ -56,9 +56,43 @@ console.log(h());
 
 ### Reliable React hooks
 
-### Zones
+Currently, React hooks rely on weird hacks, which require [unobvious restrictions on them](https://reactjs.org/docs/hooks-rules.html). When using this API, hooks may be implemented in more reliable way, allowing _most_ hooks to be called from within conditionals, loops, callbacks, etc.
 
-### Eliminating closures
+### “Standard” way to define JSX pragma
+
+The following code…
+
+```jsx
+// `Symbol.jsx{Factory,Fragment}` polyfill ↓
+import 'symbol-jsx';
+
+// Custom JSX factory and fragment symbols ↓
+import { h, Fragment } from '@foo/bar';
+
+LexicalMetadata.set(Symbol.jsxFactory, h);
+LexicalMetadata.set(Symbol.jsxFragment, Fragment);
+
+const a = <a href='https://example.com/'>Example</a>;
+```
+
+… transpiles to…
+
+```javascript
+import 'symbol-jsx';
+import { h, Fragment } from '@foo/bar';
+import { __createElement } from '@babel/runtime';
+
+LexicalMetadata.set(Symbol.jsxFactory, h);
+LexicalMetadata.set(Symbol.jsxFragment, Fragment);
+
+const a = __createElement('a', { href: 'https://example.com/' }, 'Example');
+```
+
+### Zones (future)
+
+The functionality of withdrawn Zones proposal may be implemented using this API.
+
+### Eliminating closures (future)
 
 ## Relations with other proposals
 

@@ -54,6 +54,12 @@ console.log(h());
 
 ## Case studies
 
+### Reliable React hooks
+
+### Zones
+
+### Eliminating closures
+
 ## Relations with other proposals
 
 ## New Other Properties of the Global Object

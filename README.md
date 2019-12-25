@@ -1,10 +1,10 @@
 # Custom metadata for lexical environments
 
-## New global objects
+## New Other Properties of the Global Object
 
 ### `LexicalMetadata`
 
-## New abstract operations
+## New Abstract Methods of the Environment Record
 
 ### `SetLexicalMetadata`
 

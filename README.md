@@ -6,8 +6,8 @@
 
 ```
 PragmaStatement :
-    `@` [no WhiteSpace here] Identifier `;`
-    `@` [no WhiteSpace here] Identifier Arguments `;`
+    `@` [no WhiteSpace here] Identifier [lookahead ∉ AssignmentExpression]
+    `@` [no WhiteSpace here] Identifier Arguments [lookahead ∉ AssignmentExpression]
 ```
 
 ## Built-in pragmas

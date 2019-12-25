@@ -113,7 +113,7 @@ const a = __createElement('a', { href: 'https://example.com/' }, 'Example');
 Unlike current approach (using compiler options or the `@jsx` comment), lexical metadata approach allows
 
 1. to define JSX factory and fragment in compiler-independed fashion. I.e., Babel, TypeScript or any other compiler may use pragmas defined in a lexical environment in semi-standard way,
-2. to redefine JSX factory and fragment in nested lexical environments. E.g., in edge cases, when usage of multiple JSX libraries in one file is desired,
+2. to redefine JSX factory and fragment in nested lexical environments. E.g., in edge cases, when usage of multiple JSX libraries in one file is desired.
 
 The `__createElement` helper may be defined in helpers library, added to transpiled file, or even defined in a lirary like `symbol-observable`.
 

@@ -155,47 +155,18 @@ The functionality of withdrawn Zones proposal may be implemented using this API.
 
 ## Changes to Runtime Semantics
 
-### 7.3.12 Call ( _F_, _V_, _callSiteEnvRec_ \[ , _argumentsList_ ] )
+### 7.3.12 Call ( _F_, _V_, \[ , _argumentsList_ ] )
 
-The abstract operation Call is used to call the [[Call]] internal method of a
-function object. The operation is called with arguments _F_, _V_,
-_callSiteEnvRec_, and optionally _argumentsList_ where _F_ is the function
-object, _V_ is an ECMAScript language value that is the **this** value of the
-[[Call]], _callSiteEnvRec_ is a call-site's Environment Record, and
-_argumentsList_ is the value passed to the corresponding argument of the
-internal method. If _argumentsList_ is not present, a new empty List is used as
-its value. This abstract operation performs the following steps:
+The abstract operation Call is used to call the \[\[Call]] internal method of a
+function object. The operation is called with arguments _F_, _V_, and optionally
+_argumentsList_ where _F_ is the function object, _V_ is an ECMAScript language
+value that is the **this** value of the \[\[Call]], and _argumentsList_ is the
+value passed to the corresponding argument of the internal method. If
+_argumentsList_ is not present, a new empty List is used as its value. This
+abstract operation performs the following steps:
 
 1. If _argumentsList_ is not present, set _argumentsList_ to a new empty List.
 2. If IsCallable(_F_) is **false**, throw a **TypeError** exception.
-3. Return ? _F_.[[Call]](_V_, _argumentsList_).
-
-### 12.3.6.2 EvaluateCall ( _func_, _ref_, _arguments_, _tailPosition_ )
-
-The abstract operation EvaluateCall takes as arguments a value _func_, a value
-_ref_, a Parse Node _arguments_, and a Boolean argument _tailPosition_. It
-performs the following steps:
-
-1.  If Type(_ref_) is Reference, then
-    1. If IsPropertyReference(_ref_) is **true**, then
-        1. Let _thisValue_ be GetThisValue(_ref_).
-    2. Else,
-        1. Assert: the base of _ref_ is an Environment Record.
-        2. Let _refEnv_ be GetBase(_ref_).
-        3. Let _thisValue_ be _refEnv_.WithBaseObject().
-2.  Else, 1. Let _thisValue_ be **undefined**.
-3.  `+` Let _callSiteEnv_ be running execution context's Lexical Environment.
-4.  `+` Let _callSiteEnvRec_ be _callSiteEnv_'s Environment Record.
-5.  Let _argList_ be ? ArgumentListEvaluation of _arguments_.
-6.  If Type(_func_) is not Object, throw a **TypeError** exception.
-7.  If IsCallable(_func_) is **false**, throw a **TypeError** exception.
-8.  If _tailPosition_ is **true**, perform PrepareForTailCall().
-9.  `*` Let _result_ be Call(_func_, _thisValue_, _callSiteEnvRec_, _argList_).
-10. Assert: If _tailPosition_ is **true**, the above call will not return here,
-    but instead evaluation will continue as if the following return has already
-    occurred.
-11. Assert: If _result_ is not an abrupt completion, then Type(_result_) is an
-    ECMAScript language type.
-12. Return _result_.
-
-### EvaluateNew
+3. <ins>Let _envRec_ be Lexical Environment's EnvironmentRecord.</ins>
+4. <ins>Set _envRec_.\[\[CallSiteEnvironmentRecord]] to _callSiteEnvRec_.</ins>
+5. Return ? _F_.\[\[Call]](_V_, _argumentsList_).

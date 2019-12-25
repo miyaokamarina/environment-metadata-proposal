@@ -1,10 +1,18 @@
-# Pragma statements for ES
+# Custom metadata for lexical environments
 
-## Built-in pragmas
+## New global objects
 
-## Custom pragmas
+### LexicalMetadata
 
-## Abstract operations
+## New abstract operations
+
+### SetLexicalMetadata
+
+### HasLexicalMetadata
+
+### GetLexicalMetadata
+
+### DeleteLexicalMetadata
 
 ## Changes to Runtime Semantics
 

@@ -1,4 +1,4 @@
-# Custom metadata for lexical environments
+# Custom metadata for Lexical Environments
 
 ## Case studies
 

@@ -184,13 +184,13 @@ performs the following steps:
         2. Let _refEnv_ be GetBase(_ref_).
         3. Let _thisValue_ be _refEnv_.WithBaseObject().
 2.  Else, 1. Let _thisValue_ be **undefined**.
-3.  Let _callSiteEnv_ be running execution context's Lexical Environment.
-4.  Let _callSiteEnvRec_ be _callSiteEnv_'s Environment Record.
+3.  `+` Let _callSiteEnv_ be running execution context's Lexical Environment.
+4.  `+` Let _callSiteEnvRec_ be _callSiteEnv_'s Environment Record.
 5.  Let _argList_ be ? ArgumentListEvaluation of arguments.
 6.  If Type(_func_) is not Object, throw a **TypeError** exception.
 7.  If IsCallable(_func_) is **false**, throw a **TypeError** exception.
 8.  If _tailPosition_ is **true**, perform PrepareForTailCall().
-9.  Let _result_ be Call(_func_, _thisValue_, _callSiteEnvRec_, _argList_).
+9.  `*` Let _result_ be Call(_func_, _thisValue_, _callSiteEnvRec_, _argList_).
 10. Assert: If _tailPosition_ is **true**, the above call will not return here,
     but instead evaluation will continue as if the following return has already
     occurred.

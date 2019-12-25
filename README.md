@@ -54,6 +54,8 @@ console.log(h());
 
 ## Case studies
 
+## Relations with other proposals
+
 ## New Other Properties of the Global Object
 
 ### `LexicalMetadata`

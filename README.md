@@ -1,6 +1,4 @@
-# Custom metadata for Lexical Environments
-
-> May be attached to Lexical Environment
+# Custom metadata for Lexical Environments and execution context stacks
 
 ## Minimal example
 

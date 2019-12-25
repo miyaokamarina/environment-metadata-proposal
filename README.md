@@ -2,6 +2,8 @@
 
 ## The problem
 
+## Case studies
+
 ## New Other Properties of the Global Object
 
 ### `LexicalMetadata`

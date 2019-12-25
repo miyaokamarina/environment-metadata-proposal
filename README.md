@@ -52,7 +52,7 @@ function h() {
 console.log(h());
 ```
 
-## Case studies
+## Use cases
 
 ### Reliable React hooks
 

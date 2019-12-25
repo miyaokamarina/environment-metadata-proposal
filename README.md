@@ -2,20 +2,20 @@
 
 ## New global objects
 
-### LexicalMetadata
+### `LexicalMetadata`
 
 ## New abstract operations
 
-### SetLexicalMetadata
+### `SetLexicalMetadata`
 
-### HasLexicalMetadata
+### `HasLexicalMetadata`
 
-### GetLexicalMetadata
+### `GetLexicalMetadata`
 
-### DeleteLexicalMetadata
+### `DeleteLexicalMetadata`
 
 ## Changes to Runtime Semantics
 
-### EvaluateCall
+### `EvaluateCall`
 
-### EvaluateNew
+### `EvaluateNew`

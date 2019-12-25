@@ -58,6 +58,28 @@ console.log(h());
 
 Currently, React hooks rely on weird hacks, which require [unobvious restrictions on them](https://reactjs.org/docs/hooks-rules.html). When using this API, hooks may be implemented in more reliable way, allowing _most_ hooks to be called from within conditionals, loops, callbacks, etc.
 
+```jsx
+const symbolContext = Symbol();
+
+const createElement = (Component, props, ...children) => {
+    ...
+    LexicalMetadata.set(symbolContext, context);
+    ...
+    const result = Component(props);
+    ...
+};
+
+const useContext = Context => {
+    return LexicalMetadata.get(symbolContext)[Context.symbol];
+};
+
+const Component = props => {
+    return <div>{array.map(x => {
+        useContext(L10n).translate(x);
+    })}</div>
+};
+```
+
 ### “Standard” way to define JSX pragma
 
 The following code…
@@ -88,13 +110,22 @@ LexicalMetadata.set(Symbol.jsxFragment, Fragment);
 const a = __createElement('a', { href: 'https://example.com/' }, 'Example');
 ```
 
+Unlike current approach (using compiler options or the `@jsx` comment), lexical metadata approach allows
+
+1. to define JSX factory and fragment in compiler-independed fashion. I.e., Babel, TypeScript or any other compiler may use pragmas defined in a lexical environment in semi-standard way,
+2. to redefine JSX factory and fragment in nested lexical environments. E.g., in edge cases, when usage of multiple JSX libraries in one file is desired,
+
+The `__createElement` helper may be defined in helpers library, added to transpiled file, or even defined in a lirary like `symbol-observable`.
+
 ### Zones (future)
 
 The functionality of withdrawn Zones proposal may be implemented using this API.
 
+**TODO:** Provide minimal example.
+
 ### Eliminating closures (future)
 
-## Relations with other proposals
+**TODO:** Provide minimal example.
 
 ## New Other Properties of the Global Object
 

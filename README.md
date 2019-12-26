@@ -311,12 +311,15 @@ steps are taken:
     6. Set _newContext_'s Function to null.
     7. Set _newContext_'s Realm to _nextPending_.\[\[Realm]].
     8. Set _newContext_'s ScriptOrModule to _nextPending_.\[\[ScriptOrModule]].
-    9. Push _newContext_ onto the execution context stack; _newContext_ is now
-       the running execution context.
-    10. Perform any implementation or host environment defined job
+    9. <ins>Set _newContext_'s LexicalEnvironment's
+       EnvironmentRecord.\[\[CallerMetadata]] to !
+       ObjectCreate(_nextPending_.\[\[CallerMetadata]]).</ins>
+    10. Push _newContext_ onto the execution context stack; _newContext_ is now
+        the running execution context.
+    11. Perform any implementation or host environment defined job
         initialization using _nextPending_.
-    11. Let _result_ be the result of performing the abstract operation named by
+    12. Let _result_ be the result of performing the abstract operation named by
         _nextPending_.\[\[Job]] using the elements of
         _nextPending_.\[\[Arguments]] as its arguments.
-    12. If _result_ is an abrupt completion, perform HostReportErrors(«
+    13. If _result_ is an abrupt completion, perform HostReportErrors(«
         _result_.\[\[Value]] »).

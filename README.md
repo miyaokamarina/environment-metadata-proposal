@@ -10,7 +10,7 @@
 
 import { b } from './b.js';
 
-LexicalMetadata.set('answer', 42);
+EnvironmentMetadata.set('answer', 42);
 // rec.[[CalleeMetadata]].set('answer', 42)
 
 b(); // 42
@@ -31,7 +31,7 @@ export const b = () => {
     // rec.[[CalleeMetadata]] here is { [[Prototype]]: { [[Prototype]]: null } }
     // rec.[[CallerMetadata]] here is { 'answer': 42, [[Prototype]]: null }
 
-    return LexicalMetadata.get('answer');
+    return EnvironmentMetadata.get('answer');
     // 'answer' in rec.[[CallerMetadata]] ? rec.[[CallerMetadata]].answer : rec.[[CalleeMetadata]].answer
 };
 ```
@@ -50,14 +50,14 @@ const symbolContext = Symbol();
 
 const createElement = (Component, props, ...children) => {
     // ...
-    LexicalMetadata.set(symbolContext, context);
+    EnvironmentMetadata.set(symbolContext, context);
     // ...
     const result = Component(props);
     // ...
 };
 
 const useContext = Context => {
-    return LexicalMetadata.get(symbolContext)[Context.symbol];
+    return EnvironmentMetadata.get(symbolContext)[Context.symbol];
 };
 
 const Component = props => {
@@ -82,8 +82,8 @@ import 'symbol-jsx';
 // Custom JSX factory and fragment symbols ↓
 import { h, Fragment } from '@foo/bar';
 
-LexicalMetadata.set(Symbol.jsxFactory, h);
-LexicalMetadata.set(Symbol.jsxFragment, Fragment);
+EnvironmentMetadata.set(Symbol.jsxFactory, h);
+EnvironmentMetadata.set(Symbol.jsxFragment, Fragment);
 
 const a = <a href='https://example.com/'>Example</a>;
 ```
@@ -95,13 +95,13 @@ import 'symbol-jsx';
 import { h, Fragment } from '@foo/bar';
 import { __createElement } from '@babel/runtime';
 
-LexicalMetadata.set(Symbol.jsxFactory, h);
-LexicalMetadata.set(Symbol.jsxFragment, Fragment);
+EnvironmentMetadata.set(Symbol.jsxFactory, h);
+EnvironmentMetadata.set(Symbol.jsxFragment, Fragment);
 
 const a = __createElement('a', { href: 'https://example.com/' }, 'Example');
 ```
 
-Unlike current approach (using compiler options or the `@jsx` comment), lexical
+Unlike current approach (using compiler options or the `@jsx` comment), environment
 metadata approach allows
 
 1. to define JSX factory and fragment in compiler-independed fashion. I.e.,
@@ -113,31 +113,29 @@ metadata approach allows
 The `__createElement` helper may be defined in helpers library, added to
 transpiled file, or even defined in a lirary like `symbol-observable`.
 
-### Zones (future)
+### Zones
 
 The functionality of withdrawn Zones proposal may be implemented using this API.
 
 **TODO:** Provide minimal example.
 
-### Eliminating closures (future)
+### Eliminating closures
 
 **TODO:** Provide minimal example.
 
-## New Other Properties of the Global Object
+## Protospec
 
-### `LexicalMetadata`
+### ?? LexicalMetadata
 
-## New Abstract Methods of the Environment Record
+**TODO:** _New other property of Global Object._
 
-### `SetLexicalMetadata(key, value)`
+### ?? SetEnvironmentMetadata ( _key_, _value_ )
 
-### `HasLexicalMetadata(key)`
+### ?? HasEnvironmentMetadata ( _key_ )
 
-### `GetLexicalMetadata(key)`
+### ?? GetEnvironmentMetadata ( _key_ )
 
-### `DeleteLexicalMetadata(key)`
-
-## Changes to Runtime Semantics
+### ?? DeleteEnvironmentMetadata ( _key_ )
 
 ### 9.2.1.1 PrepareForOrdinaryCall ( _F_, _newTarget_ )
 

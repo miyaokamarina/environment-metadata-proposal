@@ -6,7 +6,7 @@
 
 ```javascript
 // let rec = LexicalEnvironment.EnvironmentRecord
-// rec.[[CalleeMetadata]] here is {}
+// rec.[[CalleeMetadata]] here is { [[Prototype]]: null }
 
 import { b } from './b.js';
 
@@ -24,21 +24,15 @@ b(); // 42
 
 ```javascript
 // let rec = LexicalEnvironment.EnvironmentRecord
-// rec.[[CalleeMetadata]] here is {}
+// rec.[[CalleeMetadata]] here is { [[Prototype]]: null }
 
 export const b = () => {
     // let rec = LecicalEnvironment.EnvironmentRecord
-    // rec.[[CalleeMetadata]] here is {}
-    // rec.[[CallerMetadata]] here is { 'answer': 42, [[Parent]]: null }
+    // rec.[[CalleeMetadata]] here is { [[Prototype]]: { [[Prototype]]: null } }
+    // rec.[[CallerMetadata]] here is { 'answer': 42, [[Prototype]]: null }
 
     return LexicalMetadata.get('answer');
-    // for (let caller = rec.[[CallerMetadata]]; caller !== null; caller = caller.[[Parent]])
-    //     if ('answer' in caller)
-    //         return caller.answer
-    // for (let env = LexicalEnvironment; env !== null; env = env.outer)
-    //     if ('answer' in env.EnvironmentRecord.[[CalleeMetadata]])
-    //         return env.EnvironmentRecord.[[CalleeMetadata]].answer
-    // return undefined
+    // 'answer' in rec.[[CallerMetadata]] ? rec.[[CallerMetadata]].answer : rec.[[CalleeMetadata]].answer
 };
 ```
 
@@ -146,3 +140,34 @@ The functionality of withdrawn Zones proposal may be implemented using this API.
 ## Changes to Runtime Semantics
 
 ### 9.2.1.1 PrepareForOrdinaryCall ( _F_, _newTarget_ )
+
+1.  Assert: Type(_newTarget_) is Undefined or Object.
+2.  Let _callerContext_ be the running execution context.
+3.  Let _calleeContext_ be a new ECMAScript code execution context.
+4.  Set the Function of _calleeContext_ to _F_.
+5.  Let _calleeRealm_ be _F_.\[\[Realm]].
+6.  Set the Realm of _calleeContext_ to _calleeRealm_.
+7.  Set the ScriptOrModule of _calleeContext_ to _F_.\[\[ScriptOrModule]].
+8.  Let _localEnv_ be NewFunctionEnvironment(_F_, _newTarget_).
+9.  Set the LexicalEnvironment of _calleeContext_ to _localEnv_.
+10. Set the VariableEnvironment of _calleeContext_ to _localEnv_.
+11. If _callerContext_ is not already suspended, suspend _callerContext_.
+12. Push _calleeContext_ onto the execution context stack; _calleeContext_ is now the running execution context.
+13. NOTE: Any exception objects produced after this point are associated with _calleeRealm_.
+14. Return _calleeContext_.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

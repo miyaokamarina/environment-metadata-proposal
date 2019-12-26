@@ -65,8 +65,8 @@ EnvironmentMetadata.set(Symbol.jsxFragment, Fragment);
 const a = __createElement('a', { href: 'https://example.com/' }, 'Example');
 ```
 
-Unlike current approach (using compiler options or the `@jsx` comment), environment
-metadata approach allows
+Unlike current approach (using compiler options or the `@jsx` comment),
+environment metadata approach allows
 
 1. to define JSX factory and fragment in compiler-independed fashion. I.e.,
    Babel, TypeScript or any other compiler may use pragmas defined in a lexical
@@ -85,7 +85,8 @@ The functionality of withdrawn Zones proposal may be implemented using this API.
 
 ### Eliminating closures
 
-Closures\* may be unwanted in some cases due to its overheads. This API allows to pass data to functions indirectly and without closures.
+Closures\* may be unwanted in some cases due to its overheads. This API allows
+to pass data to functions indirectly and without closures.
 
 \* Closures defined in places other than script/module top level.
 
@@ -97,33 +98,55 @@ Closures\* may be unwanted in some cases due to its overheads. This API allows t
 
 ```javascript
 // let rec = LexicalEnvironment.EnvironmentRecord
-// rec.[[CalleeMetadata]] here is { [[Prototype]]: null }
+//
+// The NewModuleEnvironment abstract operation sets
+// rec.[[CalleeMetadata]] to {
+//     [[Prototype]]: LexicalEnvironment
+//         .outer
+//         .EnvironmentRecord
+//         .[[CalleeMetadata]]
+// }.
 
 import { b } from './b.js';
 
+// rec.[[CalleeMetadata]].answer = 42
 EnvironmentMetadata.set('answer', 42);
-// rec.[[CalleeMetadata]].set('answer', 42)
 
+// The PrepareForOrdinaryCall sets b’s
+// _calleeContext_’s [[CallerMetadata]] to {
+//     [[Prototype]]: rec.[[CalleeMetadata]]
+// }.
 b(); // 42
-// b’s [[CallerMetadata]] is set to {
-//     ...rec.[[CalleeMetadata]],
-//     [[Parent]]: rec.[[CallerMetadata]], // `null`
-// } in PrepareForOrdinaryCall.
 ```
 
 `b.js`:
 
 ```javascript
 // let rec = LexicalEnvironment.EnvironmentRecord
-// rec.[[CalleeMetadata]] here is { [[Prototype]]: null }
+//
+// The NewModuleEnvironment abstract operation sets
+// rec.[[CalleeMetadata]] to {
+//     [[Prototype]]: LexicalEnvironment
+//         .outer
+//         .EnvironmentRecord
+//         .[[CalleeMetadata]]
+// }.
 
 export const b = () => {
-    // let rec = LecicalEnvironment.EnvironmentRecord
-    // rec.[[CalleeMetadata]] here is { [[Prototype]]: { [[Prototype]]: null } }
-    // rec.[[CallerMetadata]] here is { 'answer': 42, [[Prototype]]: null }
+    // let rec = LexicalEnvironment.EnvironmentRecord
+    //
+    // The NewFunctionEnvironment abstract operation sets
+    // rec.[[CalleeMetadata]] to {
+    //     [[Prototype]]: LexicalEnvironment
+    //         .outer
+    //         .EnvironmentRecord
+    //         .[[CalleeMetadata]]
+    // }.
 
+    // 'answer' in rec.[[CallerMetadata]]
+    //     ? rec.[[CallerMetadata]].answer
+    //     : rec.[[CalleeMetadata]].answer
     return EnvironmentMetadata.get('answer');
-    // 'answer' in rec.[[CallerMetadata]] ? rec.[[CallerMetadata]].answer : rec.[[CalleeMetadata]].answer
 };
 ```
 
@@ -151,35 +174,52 @@ export const b = () => {
 6.  Set the Realm of _calleeContext_ to _calleeRealm_.
 7.  Set the ScriptOrModule of _calleeContext_ to _F_.\[\[ScriptOrModule]].
 8.  Let _localEnv_ be NewFunctionEnvironment(_F_, _newTarget_).
-9.  <ins>Perform PrepareCelleeEnvironment(_callerContext_, _calleeContext_).</ins>
+9.  <ins>Perform PrepareCelleeEnvironment(_callerContext_,
+    _calleeContext_).</ins>
 10. Set the LexicalEnvironment of _calleeContext_ to _localEnv_.
 11. Set the VariableEnvironment of _calleeContext_ to _localEnv_.
 12. If _callerContext_ is not already suspended, suspend _callerContext_.
-13. Push _calleeContext_ onto the execution context stack; _calleeContext_ is now the running execution context.
-14. NOTE: Any exception objects produced after this point are associated with _calleeRealm_.
+13. Push _calleeContext_ onto the execution context stack; _calleeContext_ is
+    now the running execution context.
+14. NOTE: Any exception objects produced after this point are associated with
+    _calleeRealm_.
 15. Return _calleeContext_.
 
 ### ?? PrepareCelleeEnvironment ( _callerContext_, _calleeContext_ )
 
-When the PrepareCalleeEnvironment abstract operation is called with execution context _callerContext_ and execution context _calleeContext_, the following steps are taken:
+When the PrepareCalleeEnvironment abstract operation is called with execution
+context _callerContext_ and execution context _calleeContext_, the following
+steps are taken:
 
 1. Let _callerRec_ be EnvironmentRecord of _callerContext_'s LexicalEnvironment.
 2. Let _calleeRec_ be EnvironmentRecord of _calleeContext_'s LexicalEnvironment.
-3. Set _calleeRec_.\[\[CallerMetadata]] to ! ObjectCreate(_callerRec_.\[\[CalleeMetadata]]).
+3. Set _calleeRec_.\[\[CallerMetadata]] to !
+   ObjectCreate(_callerRec_.\[\[CalleeMetadata]]).
 4. Return NormalCompletion(`empty`).
 
+### 8.4.1 EnqueueJob ( _queueName_, _job_, _arguments_ )
 
+1.  Assert: Type(_queueName_) is String and its value is the name of a Job Queue
+    recognized by this implementation.
+2.  Assert: _job_ is the name of a Job.
+3.  Assert: _arguments_ is a List that has the same number of elements as the
+    number of parameters required by _job_.
+4.  Let _callerContext_ be the running execution context.
+5.  Let _callerRealm_ be _callerContext_'s Realm.
+6.  Let _callerScriptOrModule_ be _callerContext_'s ScriptOrModule.
+7.  <ins>Let _callerRec_ be EnvironmentRecord of _callerContext_'s
+    LexicalEnvironment.</ins>
+8.  <ins>Let _callerMeta_ be _callerRec_.\[\[CalleeMetadata]].</ins>
+9.  Let _pending_ be PendingJob { \[\[Job]]: _job_, \[\[Arguments]]:
+    _arguments_, \[\[Realm]]: _callerRealm_, \[\[ScriptOrModule]]:
+    _callerScriptOrModule_, \[\[HostDefined]]: **undefined**<ins>,
+    \[\[CallerMetadata]]: _callerMeta_</ins> }.
+10. Perform any implementation or host environment defined processing of
+    _pending_. This may include modifying the \[\[HostDefined]] field or any
+    other field of pending.
+11. Add _pending_ at the back of the Job Queue named by _queueName_.
+12. Return NormalCompletion(`empty`).
 
+### 8.6 RunJobs ( )
 
-
-
-
-
-
-
-
-
-
-
-
-
+**TODO**

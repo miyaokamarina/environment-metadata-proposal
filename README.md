@@ -1,41 +1,5 @@
 # Custom metadata for Lexical Environments and execution context stacks
 
-## Minimal example
-
-`a.js`:
-
-```javascript
-// let rec = LexicalEnvironment.EnvironmentRecord
-// rec.[[CalleeMetadata]] here is { [[Prototype]]: null }
-
-import { b } from './b.js';
-
-EnvironmentMetadata.set('answer', 42);
-// rec.[[CalleeMetadata]].set('answer', 42)
-
-b(); // 42
-// b’s [[CallerMetadata]] is set to {
-//     ...rec.[[CalleeMetadata]],
-//     [[Parent]]: rec.[[CallerMetadata]], // `null`
-// } in PrepareForOrdinaryCall.
-```
-
-`b.js`:
-
-```javascript
-// let rec = LexicalEnvironment.EnvironmentRecord
-// rec.[[CalleeMetadata]] here is { [[Prototype]]: null }
-
-export const b = () => {
-    // let rec = LecicalEnvironment.EnvironmentRecord
-    // rec.[[CalleeMetadata]] here is { [[Prototype]]: { [[Prototype]]: null } }
-    // rec.[[CallerMetadata]] here is { 'answer': 42, [[Prototype]]: null }
-
-    return EnvironmentMetadata.get('answer');
-    // 'answer' in rec.[[CallerMetadata]] ? rec.[[CallerMetadata]].answer : rec.[[CalleeMetadata]].answer
-};
-```
-
 ## Use cases
 
 ### Reliable React hooks
@@ -121,7 +85,47 @@ The functionality of withdrawn Zones proposal may be implemented using this API.
 
 ### Eliminating closures
 
+Closures\* may be unwanted in some cases due to its overheads. This API allows to pass data to functions indirectly and without closures.
+
+\* Closures defined in places other than script/module top level.
+
 **TODO:** Provide minimal example.
+
+## Minimal example
+
+`a.js`:
+
+```javascript
+// let rec = LexicalEnvironment.EnvironmentRecord
+// rec.[[CalleeMetadata]] here is { [[Prototype]]: null }
+
+import { b } from './b.js';
+
+EnvironmentMetadata.set('answer', 42);
+// rec.[[CalleeMetadata]].set('answer', 42)
+
+b(); // 42
+// b’s [[CallerMetadata]] is set to {
+//     ...rec.[[CalleeMetadata]],
+//     [[Parent]]: rec.[[CallerMetadata]], // `null`
+// } in PrepareForOrdinaryCall.
+```
+
+`b.js`:
+
+```javascript
+// let rec = LexicalEnvironment.EnvironmentRecord
+// rec.[[CalleeMetadata]] here is { [[Prototype]]: null }
+
+export const b = () => {
+    // let rec = LecicalEnvironment.EnvironmentRecord
+    // rec.[[CalleeMetadata]] here is { [[Prototype]]: { [[Prototype]]: null } }
+    // rec.[[CallerMetadata]] here is { 'answer': 42, [[Prototype]]: null }
+
+    return EnvironmentMetadata.get('answer');
+    // 'answer' in rec.[[CallerMetadata]] ? rec.[[CallerMetadata]].answer : rec.[[CalleeMetadata]].answer
+};
+```
 
 ## Protospec
 

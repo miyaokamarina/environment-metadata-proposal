@@ -156,7 +156,7 @@ export const b = () => {
 
 **TODO:** _New other property of Global Object._
 
-### ?? SetEnvironmentMetadata ( _propertyKey_, _value_ )
+### <ins>?? SetEnvironmentMetadata ( _propertyKey_, _value_ )</ins>
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
 2. Let _envRec_ be EnvironmentRecord of current execution context's LexicalEnvironment.
@@ -165,7 +165,7 @@ export const b = () => {
 
 **TODO**
 
-### ?? HasEnvironmentMetadata ( _propertyKey_ )
+### <ins>?? HasEnvironmentMetadata ( _propertyKey_ )</ins>
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
 2. Let _envRec_ be EnvironmentRecord of current execution context's LexicalEnvironment.
@@ -176,7 +176,7 @@ export const b = () => {
 6. Else,
    1. Return ! _calleeMeta_.\[\[HasProperty]](_key_).
 
-### ?? GetEnvironmentMetadata ( _propertyKey_ )
+### <ins>?? GetEnvironmentMetadata ( _propertyKey_ )</ins>
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
 2. Let _envRec_ be EnvironmentRecord of current execution context's LexicalEnvironment.
@@ -210,7 +210,7 @@ export const b = () => {
     _calleeRealm_.
 15. Return _calleeContext_.
 
-### ?? PrepareCelleeEnvironment ( _callerContext_, _calleeContext_ )
+### <ins>?? PrepareCelleeEnvironment ( _callerContext_, _calleeContext_ )</ins>
 
 When the PrepareCalleeEnvironment abstract operation is called with execution
 context _callerContext_ and execution context _calleeContext_, the following

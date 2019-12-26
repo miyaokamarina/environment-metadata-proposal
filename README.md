@@ -222,4 +222,37 @@ steps are taken:
 
 ### 8.6 RunJobs ( )
 
-**TODO**
+1. Perform ? InitializeHostDefinedRealm().
+2. In an implementation-dependent manner, obtain the ECMAScript source texts
+   (see clause 10) and any associated host-defined values for zero or more
+   ECMAScript scripts and/or ECMAScript modules. For each such _sourceText_ and
+   _hostDefined_, do
+    1. If _sourceText_ is the source code of a script, then
+        1. Perform EnqueueJob(**"ScriptJobs"**, ScriptEvaluationJob, «
+           _sourceText_, _hostDefined_ »).
+    2. Else,
+        1. Assert: _sourceText_ is the source code of a module.
+        2. Perform EnqueueJob(**"ScriptJobs"**, TopLevelModuleEvaluationJob, «
+           _sourceText_, _hostDefined_ »).
+3. Repeat,
+    1. Suspend the running execution context and remove it from the execution
+       context stack.
+    2. Assert: The execution context stack is now empty.
+    3. Let _nextQueue_ be a non-empty Job Queue chosen in an
+       implementation-defined manner. If all Job Queues are empty, the result is
+       implementation-defined.
+    4. Let _nextPending_ be the PendingJob record at the front of _nextQueue_.
+       Remove that record from nextQueue.
+    5. Let _newContext_ be a new execution context.
+    6. Set _newContext_'s Function to null.
+    7. Set _newContext_'s Realm to _nextPending_.\[\[Realm]].
+    8. Set _newContext_'s ScriptOrModule to _nextPending_.\[\[ScriptOrModule]].
+    9. Push _newContext_ onto the execution context stack; _newContext_ is now
+       the running execution context.
+    10. Perform any implementation or host environment defined job
+        initialization using _nextPending_.
+    11. Let _result_ be the result of performing the abstract operation named by
+        _nextPending_.\[\[Job]] using the elements of
+        _nextPending_.\[\[Arguments]] as its arguments.
+    12. If _result_ is an abrupt completion, perform HostReportErrors(«
+        _result_.\[\[Value]] »).

@@ -149,7 +149,7 @@ The functionality of withdrawn Zones proposal may be implemented using this API.
 6.  Set the Realm of _calleeContext_ to _calleeRealm_.
 7.  Set the ScriptOrModule of _calleeContext_ to _F_.\[\[ScriptOrModule]].
 8.  Let _localEnv_ be NewFunctionEnvironment(_F_, _newTarget_).
-9.  Perform PrepareCelleeEnvironment(_callerContext_, _calleeContext_).
+9.  <ins>Perform PrepareCelleeEnvironment(_callerContext_, _calleeContext_).</ins>
 10. Set the LexicalEnvironment of _calleeContext_ to _localEnv_.
 11. Set the VariableEnvironment of _calleeContext_ to _localEnv_.
 12. If _callerContext_ is not already suspended, suspend _callerContext_.

@@ -149,12 +149,22 @@ The functionality of withdrawn Zones proposal may be implemented using this API.
 6.  Set the Realm of _calleeContext_ to _calleeRealm_.
 7.  Set the ScriptOrModule of _calleeContext_ to _F_.\[\[ScriptOrModule]].
 8.  Let _localEnv_ be NewFunctionEnvironment(_F_, _newTarget_).
-9.  Set the LexicalEnvironment of _calleeContext_ to _localEnv_.
-10. Set the VariableEnvironment of _calleeContext_ to _localEnv_.
-11. If _callerContext_ is not already suspended, suspend _callerContext_.
-12. Push _calleeContext_ onto the execution context stack; _calleeContext_ is now the running execution context.
-13. NOTE: Any exception objects produced after this point are associated with _calleeRealm_.
-14. Return _calleeContext_.
+9.  Perform PrepareCelleeEnvironment(_callerContext_, _calleeContext_).
+10. Set the LexicalEnvironment of _calleeContext_ to _localEnv_.
+11. Set the VariableEnvironment of _calleeContext_ to _localEnv_.
+12. If _callerContext_ is not already suspended, suspend _callerContext_.
+13. Push _calleeContext_ onto the execution context stack; _calleeContext_ is now the running execution context.
+14. NOTE: Any exception objects produced after this point are associated with _calleeRealm_.
+15. Return _calleeContext_.
+
+### ?? PrepareCelleeEnvironment ( _callerContext_, _calleeContext_ )
+
+When the PrepareCalleeEnvironment abstract operation is called with execution context _callerContext_ and execution context _calleeContext_, the following steps are taken:
+
+1. Let _callerRec_ be EnvironmentRecord of _callerContext_'s LexicalEnvironment.
+2. Let _calleeRec_ be EnvironmentRecord of _calleeContext_'s LexicalEnvironment.
+3. Set _calleeRec_.\[\[CallerMetadata]] to ! ObjectCreate(_callerRec_.\[\[CalleeMetadata]]).
+4. Return NormalCompletion(`empty`).
 
 
 

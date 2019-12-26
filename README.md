@@ -156,13 +156,38 @@ export const b = () => {
 
 **TODO:** _New other property of Global Object._
 
-### ?? SetEnvironmentMetadata ( _key_, _value_ )
+### ?? SetEnvironmentMetadata ( _propertyKey_, _value_ )
 
-### ?? HasEnvironmentMetadata ( _key_ )
+1. Let _key_ be ? ToPropertyKey(_propertyKey_).
+2. Let _envRec_ be EnvironmentRecord of current execution context's LexicalEnvironment.
+3. Let _callerMeta_ be _envRec_.\[\[CallerMetadata]].
+4. Let _calleeMeta_ be _envRec_.\[\[CalleeMetadata]].
 
-### ?? GetEnvironmentMetadata ( _key_ )
+**TODO**
 
-### ?? DeleteEnvironmentMetadata ( _key_ )
+### ?? HasEnvironmentMetadata ( _propertyKey_ )
+
+1. Let _key_ be ? ToPropertyKey(_propertyKey_).
+2. Let _envRec_ be EnvironmentRecord of current execution context's LexicalEnvironment.
+3. Let _callerMeta_ be _envRec_.\[\[CallerMetadata]].
+4. Let _calleeMeta_ be _envRec_.\[\[CalleeMetadata]].
+5. If ! _callerMeta_.\[\[HasProperty]](_key_) is **true**, then
+   1. Return **true**.
+6. Else,
+   1. Return ! _calleeMeta_.\[\[HasProperty]](_key_).
+
+### ?? GetEnvironmentMetadata ( _propertyKey_ )
+
+1. Let _key_ be ? ToPropertyKey(_propertyKey_).
+2. Let _envRec_ be EnvironmentRecord of current execution context's LexicalEnvironment.
+3. Let _callerMeta_ be _envRec_.\[\[CallerMetadata]].
+4. Let _calleeMeta_ be _envRec_.\[\[CalleeMetadata]].
+5. If ! _callerMeta_.\[\[HasProperty]](_key_) is **true**, then
+   1. Return ! _callerMeta_.\[\[Get]](_key_, _callerMeta_).
+6. Else,
+   1. Return ! _calleeMeta_.\[\[Get]](_key_, _calleeMeta_).
+
+### ?? DeleteEnvironmentMetadata ( _propertyKey_ )
 
 ### 9.2.1.1 PrepareForOrdinaryCall ( _F_, _newTarget_ )
 

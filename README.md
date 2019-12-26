@@ -79,7 +79,8 @@ transpiled file, or even defined in a lirary like `symbol-observable`.
 
 ### Zones
 
-The functionality of withdrawn Zones proposal may be implemented using this API.
+Some functionality of withdrawn Zones proposal may be implemented using this
+API.
 
 **TODO:** Provide minimal example.
 
@@ -90,7 +91,42 @@ to pass data to functions indirectly and without closures.
 
 \* Closures defined in places other than script/module top level.
 
-**TODO:** Provide minimal example.
+Note that all functions defined at the top level, so no expensive closures are
+created neither on component render nor inside loop.
+
+```jsx
+const onClickSymbol = Symbol();
+const itemSymbol = Symbol();
+
+const handleClick = () => {
+    const item = EnvironmentMetadata.get(itemSymbol);
+    const onClick = EnvironmentMetadata.get(onClickSymbol);
+
+    onClick(item);
+};
+
+const map = item => {
+    EnvironmentMetadata.set(itemSymbol, item);
+
+    return (
+        <div key={item} onClick={handleClick}>
+            {item}
+        </div>
+    );
+};
+
+const List = ({ items, onClick }) => {
+    EnvironmentMetadata.set(onClickSymbol, onClick);
+
+    return <div>{items.map(items)}</div>;
+};
+
+const onClick = console.log;
+
+const list = <List items={['a', 'b']} onClick={onClick} />;
+
+// On click on `a` list item, `'a'` string will be printed to the console.
+```
 
 ## Minimal example
 
@@ -159,7 +195,8 @@ export const b = () => {
 ### <ins>?? SetEnvironmentMetadata ( _propertyKey_, _value_ )</ins>
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
-2. Let _envRec_ be EnvironmentRecord of current execution context's LexicalEnvironment.
+2. Let _envRec_ be EnvironmentRecord of current execution context's
+   LexicalEnvironment.
 3. Let _callerMeta_ be _envRec_.\[\[CallerMetadata]].
 4. Let _calleeMeta_ be _envRec_.\[\[CalleeMetadata]].
 
@@ -168,24 +205,26 @@ export const b = () => {
 ### <ins>?? HasEnvironmentMetadata ( _propertyKey_ )</ins>
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
-2. Let _envRec_ be EnvironmentRecord of current execution context's LexicalEnvironment.
+2. Let _envRec_ be EnvironmentRecord of current execution context's
+   LexicalEnvironment.
 3. Let _callerMeta_ be _envRec_.\[\[CallerMetadata]].
 4. Let _calleeMeta_ be _envRec_.\[\[CalleeMetadata]].
 5. If ! _callerMeta_.\[\[HasProperty]](_key_) is **true**, then
-   1. Return **true**.
+    1. Return **true**.
 6. Else,
-   1. Return ! _calleeMeta_.\[\[HasProperty]](_key_).
+    1. Return ! _calleeMeta_.\[\[HasProperty]](_key_).
 
 ### <ins>?? GetEnvironmentMetadata ( _propertyKey_ )</ins>
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
-2. Let _envRec_ be EnvironmentRecord of current execution context's LexicalEnvironment.
+2. Let _envRec_ be EnvironmentRecord of current execution context's
+   LexicalEnvironment.
 3. Let _callerMeta_ be _envRec_.\[\[CallerMetadata]].
 4. Let _calleeMeta_ be _envRec_.\[\[CalleeMetadata]].
 5. If ! _callerMeta_.\[\[HasProperty]](_key_) is **true**, then
-   1. Return ! _callerMeta_.\[\[Get]](_key_, _callerMeta_).
+    1. Return ! _callerMeta_.\[\[Get]](_key_, _callerMeta_).
 6. Else,
-   1. Return ! _calleeMeta_.\[\[Get]](_key_, _calleeMeta_).
+    1. Return ! _calleeMeta_.\[\[Get]](_key_, _calleeMeta_).
 
 ### ?? DeleteEnvironmentMetadata ( _propertyKey_ )
 

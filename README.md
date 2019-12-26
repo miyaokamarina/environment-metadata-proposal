@@ -311,7 +311,7 @@ steps are taken:
     6. Set _newContext_'s Function to null.
     7. Set _newContext_'s Realm to _nextPending_.\[\[Realm]].
     8. Set _newContext_'s ScriptOrModule to _nextPending_.\[\[ScriptOrModule]].
-    9. <ins>**NOTE: Absolutely unsure what to do here ¯\\_(ツ)_/¯** Set _newContext_'s LexicalEnvironment's
+    9. <ins>**NOTE: Absolutely unsure what to do here ¯\\\_(ツ)\_/¯** Set _newContext_'s LexicalEnvironment's
        EnvironmentRecord.\[\[CallerMetadata]] to !
        ObjectCreate(_nextPending_.\[\[CallerMetadata]]).</ins>
     10. Push _newContext_ onto the execution context stack; _newContext_ is now

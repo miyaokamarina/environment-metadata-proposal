@@ -1,5 +1,31 @@
 # Custom metadata for Lexical Environments and execution context stacks
 
+## Open questions
+
+### The name
+
+**Environment Metadata** LGTM, but probably there are better alternatives.
+
+### API
+
+-   Currently, the `EnvironmentMetadata` is a regular object with method to
+    access environment metadata properties. Maybe, it should be an exotic object
+    with custom \[\[Get]]/\[\[Set]]/etc. internal slots?
+-   Maybe, it should allow more granular an low-level operations on metadata?
+    E.g., explicit access to the \[\[CalleeMetadata\]\] (lexical),
+    \[\[CallerMetadata]] (passed from caller to callee through stack),
+    \[\[ReturnMetadata\]\] (passed from callee to caller through stack).
+
+### How to work with async callbacks
+
+It’s pretty straightforward to pass metadata between contexts, when we work with
+sync calls. But it becomes more complicated, when we should pass across async
+operations (e.g. from the context in which the DOM event handler was set up to
+the context in which the callback was called; or the same for NodeJS callbacks).
+
+The Zones protospec states that some of this semantics are
+implementation-dependent, but probably there is a better way.
+
 ## Use cases
 
 ### Reliable React hooks

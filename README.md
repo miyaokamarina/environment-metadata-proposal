@@ -63,7 +63,7 @@ const Component = props => {
 
 > **NOTE:** With some changes to the Hooks API (`useState<s>(initial: s)` →
 > `useState<s>(name: PropertyKey, initial: s)`), even the `useState` hook may be
-> called from everywhere within a component.
+> called from everywhere within a component — or even from outside of component.
 
 ### “Standard” way to define JSX pragma
 

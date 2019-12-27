@@ -41,32 +41,44 @@ const Component = props => {
 
 ### “Standard” way to define JSX pragma
 
+As number of JSX frameworks grows, it is necessary to fine-tune compiler to use
+various pragmas — in some cases you may need to use two different pragmas in one
+file (e.g., if you transitiononing from Vue to React or vice versa, and use
+mixed React+Vue components).
+
+Using this API, it is possible to intoroduce conventinal framework-agnostic
+symbols and pragmas, which will be used by frameworks.
+
 The following code…
 
 ```jsx
-// `Symbol.jsx{Factory,Fragment}` polyfill ↓
-import 'symbol-jsx';
+import { symbolFactory, symbolFragment } from 'universal-jsx';
 
 // Custom JSX factory and fragment symbols ↓
 import { h, Fragment } from '@foo/bar';
 
-EnvironmentMetadata.set(Symbol.jsxFactory, h);
-EnvironmentMetadata.set(Symbol.jsxFragment, Fragment);
+EnvironmentMetadata.set(symbolFactory, h);
+EnvironmentMetadata.set(symbolFragment, Fragment);
 
-const a = <a href='https://example.com/'>Example</a>;
+const x = (
+    <>
+        Hello, world<em>‼</em>
+    </>
+);
+const y = <a href='https://example.com/'>{x}</a>;
 ```
 
 … transpiles to…
 
 ```javascript
-import 'symbol-jsx';
+import { symbolFactory, symbolFragment, $h, $Fragment } from 'universal-jsx';
 import { h, Fragment } from '@foo/bar';
-import { __createElement } from '@babel/runtime';
 
-EnvironmentMetadata.set(Symbol.jsxFactory, h);
-EnvironmentMetadata.set(Symbol.jsxFragment, Fragment);
+EnvironmentMetadata.set(symbolFactory, h);
+EnvironmentMetadata.set(symbolFragment, Fragment);
 
-const a = __createElement('a', { href: 'https://example.com/' }, 'Example');
+const x = $h($Fragment, null, 'Hello, world', $h('em', null, '‼'));
+const y = $h('a', { href: 'https://example.com/' }, x);
 ```
 
 Unlike current approach (using compiler options or the `@jsx` comment),
@@ -78,8 +90,10 @@ environment metadata approach allows
 2. to redefine JSX factory and fragment in nested lexical environments. E.g., in
    edge cases, when usage of multiple JSX libraries in one file is desired.
 
-The `__createElement` helper may be defined in helpers library, added to
-transpiled file, or even defined in a lirary like `symbol-observable`.
+> **NOTE:** What if I want to write the `setupJsx(factory, fragment)` helper and
+> use it instead of direct `EnvironmentMetadata.*` calls? Currently, it cannot
+> change callee environment, we need a way to propagate **some** environment
+> changes from callee back to caller.
 
 ### Zones
 

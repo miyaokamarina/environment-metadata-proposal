@@ -35,6 +35,10 @@ const Component = props => {
 };
 ```
 
+> **NOTE:** With some changes to the Hooks API (`useState<s>(initial: s)` →
+> `useState<s>(name: PropertyKey, initial: s)`), even the `useState` hook may be
+> called from everywhere within a component.
+
 ### “Standard” way to define JSX pragma
 
 The following code…
@@ -84,6 +88,10 @@ API.
 
 **TODO:** Provide minimal example.
 
+### Informative logs
+
+**TODO:** Provide minimal example.
+
 ### Eliminating closures
 
 Closures\* may be unwanted in some cases due to its overheads. This API allows
@@ -128,7 +136,7 @@ const list = <List items={['a', 'b']} onClick={onClick} />;
 // On click on `a` list item, `'a'` string will be printed to the console.
 ```
 
-## Minimal example
+### Semantics explained
 
 `a.js`:
 
@@ -199,8 +207,14 @@ export const b = () => {
    LexicalEnvironment.
 3. Let _callerMeta_ be _envRec_.\[\[CallerMetadata]].
 4. Let _calleeMeta_ be _envRec_.\[\[CalleeMetadata]].
+5. Perform ! _callerMeta_.\[\[Set]](_key_, _value_, _callerMeta_).
+6. Perform ! _calleeMeta_.\[\[Set]](_key_, _value_, _calleeMeta_).
+7. Return NormalCompletion(`empty`).
 
-**TODO**
+> **NOTE:** A property must be set in both caller and callee metadata. Caller
+> metadata takes priority when resding properties using HasEnvironmentMetadata
+> and GetEnvironmentMetadata, and callee metadata used to inherit from when
+> passing to functions called from current context.
 
 ### <ins>?? HasEnvironmentMetadata ( _propertyKey_ )</ins>
 
@@ -311,7 +325,8 @@ steps are taken:
     6. Set _newContext_'s Function to null.
     7. Set _newContext_'s Realm to _nextPending_.\[\[Realm]].
     8. Set _newContext_'s ScriptOrModule to _nextPending_.\[\[ScriptOrModule]].
-    9. <ins>**NOTE: Absolutely unsure what to do here ¯\\\_(ツ)\_/¯** Set _newContext_'s LexicalEnvironment's
+    9. <ins>**NOTE: Absolutely unsure what to do here ¯\\\_(ツ)\_/¯** Set
+       _newContext_'s LexicalEnvironment's
        EnvironmentRecord.\[\[CallerMetadata]] to !
        ObjectCreate(_nextPending_.\[\[CallerMetadata]]).</ins>
     10. Push _newContext_ onto the execution context stack; _newContext_ is now

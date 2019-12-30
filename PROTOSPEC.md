@@ -97,6 +97,10 @@ steps are taken:
 
 ## 9.3.1 \[\[Call]] ( _thisArgument_, _argumentsList_ )
 
+## 18.4.5 EnvironmentMetadata
+
+See 28.
+
 ## 28 Environment Metadata
 
 ### 28.1 The EnvironmentMetadata Object

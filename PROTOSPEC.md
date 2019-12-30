@@ -84,7 +84,7 @@
     _calleeRealm_.
 15. Return _calleeContext_.
 
-## <ins>?? PrepareCelleeEnvironment ( _callerContext_, _calleeContext_ )</ins>
+## 9.2.1.4 PrepareCelleeEnvironment ( _callerContext_, _calleeContext_ )
 
 When the PrepareCalleeEnvironment abstract operation is called with execution
 context _callerContext_ and execution context _calleeContext_, the following
@@ -97,48 +97,68 @@ steps are taken:
 
 ## 9.3.1 \[\[Call]] ( _thisArgument_, _argumentsList_ )
 
-## <ins>28 Environment Metadata</ins>
+## 28 Environment Metadata
 
-### <ins>28.2 The EnvironmentMetadata Constructor</ins>
+### 28.1 The EnvironmentMetadata Object
 
-The EnvironmentMetadata constructor:
+The EnvironmentMetadata object:
 
 -   is the intrinsic object _%EnvironmentMetadata%_.
 -   is the initial value of the **"EnvironmentMetadata"** property of the global object.
--   is not intended to be called as a function.
--   is not intended to be used with the **`new`** operator.
--   is not intended to be subclassed.
--   may be used as the value of an **`extends`** clause of a class definition but a **`super`** call to it will cause an exception.
+-   is an ordinary object.
+-   has a \[\[Prototype]] internal slot whose value id %Object.prototype%.
+-   is not a function object.
+-   does not have a \[\[Construct]] internal method; it cannot be used as a constructor with the new operator.
+-   does not have a \[\[Call]] internal method; it cannot be invoked as a function.
 
-### <ins>28.3 Properties of the EnvironmentMetadata Contructor</ins>
-
-### <ins>28.4 Properties of the EnvironmentMetadata Prototype Object</ins>
-
-### <ins>28.5 Properties of the EnvironmentMetadata Instances</ins>
-
-## <ins>?? SetEnvironmentMetadataProperty ( _meta_, _propertyKey_, _value_ )</ins>
+#### 28.1.1 EnvironmentMetadata.has ( _propertyKey_ )
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
-2. Perform ! _meta_.\[\[Set]](_key_, _value_, _meta_).
-3. Return NormalCompletion(`empty`).
-
-> **NOTE:** A property must be set in both caller and callee metadata. Caller
-> metadata takes priority when resding properties using HasEnvironmentMetadata
-> and GetEnvironmentMetadata, and callee metadata used to inherit from when
-> passing to functions called from current context.
-
-## <ins>?? HasEnvironmentMetadataProperty ( _meta_, _propertyKey_ )</ins>
-
-1. Let _key_ be ? ToPropertyKey(_propertyKey_).
+2. Let _lex_ be current execution context's LexicalEnvironment.
+3. Let _rec_ be _lex_'s EnvironmentRecord.
+3. Let _meta_ be _rec_.\[\[Metadata]].
 2. Return ! _meta_.\[\[HasProperty]](_key_).
 
-## <ins>?? GetEnvironmentMetadataProperty ( _meta_, _propertyKey_ )</ins>
+#### 28.1.2 EnvironmentMetadata.get ( _propertyKey_ )
+
+When the **`get`** function is called with argument _propertyKey_, the following steps are taken:
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
-2. Return ! _meta_.\[\[Get]](_key_, _meta_).
+2. Let _lex_ be current execution context's LexicalEnvironment.
+3. Let _rec_ be _lex_'s EnvironmentRecord.
+3. Let _meta_ be _rec_.\[\[Metadata]].
+4. Return ! _meta_.\[\[Get]](_key_, _meta_).
 
-## <ins>?? DeleteEnvironmentMetadataProperty ( _meta_, _propertyKey_ )</ins>
+#### 28.1.3 EnvironmentMetadata.set ( _propertyKey_, _value_ )
 
-## <ins>?? GetParentEnvironmentMetadata ( _meta_ )</ins>
+When the **`set`** function is called with arguments _propertyKey_ and _value_, the following steps are taken:
 
-## <ins>?? PropagateEnvironmentMetadata ( _meta_ )</ins>
+1. Let _key_ be ? ToPropertyKey(_propertyKey_).
+2. Let _lex_ be current execution context's LexicalEnvironment.
+3. Let _rec_ be _lex_'s EnvironmentRecord.
+3. Let _meta_ be _rec_.\[\[Metadata]].
+4. Return ! _meta_.\[\[Set]](_key_, _value_, _meta_).
+
+#### 28.1.4 EnvironmentMetadata.delete ( _propertyKey_ )
+
+When the **`delete`** function is called with argument _propertyKey_, the following steps are taken:
+
+1. Let _key_ be ? ToPropertyKey(_propertyKey_).
+2. Let _lex_ be current execution context's LexicalEnvironment.
+3. Let _rec_ be _lex_'s EnvironmentRecord.
+3. Let _meta_ be _rec_.\[\[Metadata]].
+2. Return ! _meta_.\[\[Delete]](_key_).
+
+#### 28.1.5 EnvironmentMetadata.propagate ()
+
+When the **`propagate`** function is called, the following steps are taken:
+
+1. Let _key_ be ? ToPropertyKey(_propertyKey_).
+2. Let _lex_ be current execution context's LexicalEnvironment.
+3. Let _rec_ be _lex_'s EnvironmentRecord.
+3. Let _meta_ be _rec_.\[\[Metadata]].
+4. If _meta_.\[\[Prototype]] is **null**, then
+    1. Throw a **TypeError** exception.
+5. Else,
+    1. Set _rec_.\[\[Metadata]] to _meta_.\[\[Prototype]].
+    2. Return NormalCompletion(`empty`).

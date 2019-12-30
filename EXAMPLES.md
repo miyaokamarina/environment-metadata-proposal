@@ -94,8 +94,6 @@ API.
 
 ### Informative logs
 
-**TODO:** Provide minimal example.
-
 ```javascript
 // a.js
 import { logger } from '@foo/bar';

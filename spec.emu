@@ -1,166 +1,297 @@
-<!DOCTYPE html>
+<!doctype html>
 
-<meta charset="utf8" />
+<meta charset='utf8'>
 
-<link rel="stylesheet" href="./spec.css" />
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css"
-/>
-<script src="./spec.js"></script>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css'>
 
-<emu-biblio href="./biblio.json"></emu-biblio>
+<emu-biblio href='./ecma-262.json'></emu-biblio>
 
-<pre class="metadata">
+<pre class='metadata'>
     title: Environment Metadata
     stage: NaN
-    contributors: Ecma International
+    location: https://miyaokamarina.github.io/environment-metadata-proposal/
+    contributors: Ecma International, Yuri Zemskov
 </pre>
 
-<emu-clause id="sec-executable-code-and-execution-contexts">
-  <h1>Executable Code and Execution Contexts</h1>
+<emu-clause id='sec-executable-code-and-execution-contexts'>
+    <h1>Executable Code and Execution Contexts</h1>
 
-  <emu-clause id="sec-lexical-environments">
-    <h1>Lexical Environments</h1>
+    <emu-clause id='sec-lexical-environments'>
+        <h1>Lexical Environments</h1>
 
-    <emu-clause id="sec-lexical-environment-operations">
-      <h1>Lexical Environment Operations</h1>
+        <emu-clause id='sec-lexical-environment-operations'>
+            <h1>Lexical Environment Operations</h1>
 
-      <emu-clause id="sec-newdeclarativeenvironment">
-        <h1>NewDeclarativeEnvironment ( _E_ )</h1>
+            <emu-clause id='sec-newdeclarativeenvironment' aoid='NewDeclarativeEnvironment'>
+                <h1>NewDeclarativeEnvironment ( _E_ )</h1>
 
-        <emu-alg>
-          1. Let _env_ be a new Lexical Environment. 2. Let _envRec_ be a new
-          declarative Environment Record containing no bindings. 3. Set _env_'s
-          EnvironmentRecord to _envRec_. 4. Set the outer lexical environment
-          reference of _env_ to _E_. 5.
-          <ins>Let _outerRec_ be _E_'s EnvironmentRecord.</ins> 6.
-          <ins>Set _envRec_.[[Metadata]] to _outerRec_.[[Metadata]].</ins>
-          7. Return _env_.
-        </emu-alg>
-      </emu-clause>
+                <emu-alg>
+                    1. Let _env_ be a new Lexical Environment.
+                    2. Let _envRec_ be a new declarative Environment Record containing no bindings.
+                    3. Set _env_'s EnvironmentRecord to _envRec_.
+                    4. Set the outer lexical environment reference of _env_ to _E_.
+                    5. <ins>Let _outerRec_ be _E_'s EnvironmentRecord.</ins>
+                    6. <ins>Set _envRec_.[[Metadata]] to _outerRec_.[[Metadata]].</ins>
+                    7. Return _env_.
+                </emu-alg>
+            </emu-clause>
 
-      <emu-clause id="sec-newobjectenvironment">
-        <h1>NewObjectEnvironment ( _O_, _E_ )</h1>
+            <emu-clause id='sec-newobjectenvironment' aoid='NewObjectEnvironment'>
+                <h1>NewObjectEnvironment ( _O_, _E_ )</h1>
 
-        <emu-alg>
-          1. Let _env_ be a new Lexical Environment. 2. Let _envRec_ be a new
-          object Environment Record containing _O_ as the binding object. 3. Set
-          _env_'s EnvironmentRecord to _envRec_. 4. Set the outer lexical
-          environment reference of _env_ to _E_. 5.
-          <ins>Let _outerRec_ be _E_'s EnvironmentRecord.</ins> 6.
-          <ins>Set _envRec_.[[Metadata]] to _outerRec_.[[Metadata]].</ins>
-          7. Return _env_.
-        </emu-alg>
-      </emu-clause>
+                <emu-alg>
+                    1. Let _env_ be a new Lexical Environment.
+                    2. Let _envRec_ be a new object Environment Record containing _O_ as the binding object.
+                    3. Set _env_'s EnvironmentRecord to _envRec_.
+                    4. Set the outer lexical environment reference of _env_ to _E_.
+                    5. <ins>Let _outerRec_ be _E_'s EnvironmentRecord.</ins>
+                    6. <ins>Set _envRec_.[[Metadata]] to _outerRec_.[[Metadata]].</ins>
+                    7. Return _env_.
+                </emu-alg>
+            </emu-clause>
 
-      <emu-clause id="sec-newglobalenvironment">
-        <h1>NewGlobalEnvironment ( _G_, _thisValue_ )</h1>
+            <emu-clause id='sec-newglobalenvironment' aoid='NewGlobalEnvironment'>
+                <h1>NewGlobalEnvironment ( _G_, _thisValue_ )</h1>
 
-        <emu-alg>
-          1. Let _env_ be a new Lexical Environment. 2. Let _objRec_ be a new
-          object Environment Record containing _G_ as the binding object. 3. Let
-          _dclRec_ be a new declarative Environment Record containing no
-          bindings. 4. Let _globalRec_ be a new global Environment Record. 5.
-          Set _globalRec_.[[ObjectRecord]] to _objRec_. 6. Set
-          _globalRec_.[[GlobalThisValue]] to _thisValue_. 7. Set
-          _globalRec_.[[DeclarativeRecord]] to _dclRec_. 8. Set
-          _globalRec_.[[VarNames]] to a new empty List. 9.
-          <ins>Set _globalRec_.[[Metadata]] to ! ObjectCreate(*null*)</ins>. 10.
-          Set _env_'s EnvironmentRecord to _globalRec_. 11. Set the outer
-          lexical environment reference of _env_ to *null*. 12. Return _env_.
-        </emu-alg>
-      </emu-clause>
+                <emu-alg>
+                    1. Let _env_ be a new Lexical Environment.
+                    2. Let _objRec_ be a new object Environment Record containing _G_ as the binding
+                    object.
+                    3. Let _dclRec_ be a new declarative Environment Record containing no bindings.
+                    4. Let _globalRec_ be a new global Environment Record.
+                    5. Set _globalRec_.[[ObjectRecord]] to _objRec_.
+                    6. Set _globalRec_.[[GlobalThisValue]] to _thisValue_.
+                    7. Set _globalRec_.[[DeclarativeRecord]] to _dclRec_.
+                    8. Set _globalRec_.[[VarNames]] to a new empty List.
+                    9. <ins>Set _globalRec_.[[Metadata]] to ! ObjectCreate(*null*)</ins>.
+                    10. Set _env_'s EnvironmentRecord to _globalRec_.
+                    11. Set the outer lexical environment reference of _env_ to *null*.
+                    12. Return _env_.
+                </emu-alg>
+            </emu-clause>
 
-      <emu-clause id="sec-newmoduleenvironment">
-        <h1>NewModuleEnvironment ( _E_ )</h1>
+            <emu-clause id='sec-newmoduleenvironment' aoid='NewModuleEnvironment'>
+                <h1>NewModuleEnvironment ( _E_ )</h1>
 
-        <emu-alg>
-          1. Let _env_ be a new Lexical Environment. 2. Let _envRec_ be a new
-          module Environment Record containing no bindings. 3. Set _env_'s
-          EnvironmentRecord to _envRec_. 4. Set the outer lexical environment
-          reference of _env_ to E. 5.
-          <ins>Let _outerRec_ be _E_'s EnvironmentRecord.</ins> 6.
-          <ins>Set _envRec_.[[Metadata]] to _outerRec_.[[Metadata]].</ins>
-          7. Return _env_.
-        </emu-alg>
-      </emu-clause>
+                <emu-alg>
+                    1. Let _env_ be a new Lexical Environment.
+                    2. Let _envRec_ be a new module Environment Record containing no bindings.
+                    3. Set _env_'s EnvironmentRecord to _envRec_.
+                    4. Set the outer lexical environment reference of _env_ to E.
+                    5. <ins>Let _outerRec_ be _E_'s EnvironmentRecord.</ins>
+                    6. <ins>Set _envRec_.[[Metadata]] to _outerRec_.[[Metadata]].</ins>
+                    7. Return _env_.
+                </emu-alg>
+            </emu-clause>
+        </emu-clause>
     </emu-clause>
-  </emu-clause>
 
-  <emu-clause id="sec-jobs-and-job-queues">
-    <h1>Jobs and Job Queues</h1>
+    <emu-clause id='sec-jobs-and-job-queues'>
+        <h1>Jobs and Job Queues</h1>
 
-    <p>
-      A <dfn id="job-queue">Job Queue</dfn> is a FIFO queue of PendingJob
-      records. Each Job Queue has a name and the full set of available Job
-      Queues are defined by an ECMAScript implementation. Every ECMAScript
-      implementation has at least the Job Queues defined in
-      <emu-xref href="#table-26"></emu-xref>.
-    </p>
+        <emu-clause id='sec-enqueuejob' aoid='EnqueueJob'>
+            <h1>EnqueueJob ( _queueName_, _job_, _arguments_ )</h1>
 
-    <emu-clause id="sec-enqueuejob">
-      <h1>EnqueueJob ( _queueName_, _job_, _arguments_ )</h1>
-
-      <emu-alg>
-        1. Assert: Type(_queueName_) is String and its value is the name of a
-        Job Queue recognized by this implementation. 2. Assert: _job_ is the
-        name of a Job. 3. Assert: _arguments_ is a List that has the same number
-        of elements as the number of parameters required by _job_. 4. Let
-        _callerContext_ be the running execution context. 5. Let _callerRealm_
-        be _callerContext_'s Realm. 6. Let _callerScriptOrModule_ be
-        _callerContext_'s ScriptOrModule. 7.
-        <ins
-          >Let _callerRec_ be EnvironmentRecord of _callerContext_'s
-          LexicalEnvironment.</ins
-        >
-        8. <ins>Let _meta_ be _callerRec_.[[Metadata]].</ins> 9. Let _pending_
-        be PendingJob { [[Job]]: _job_, [[Arguments]]: _arguments_, [[Realm]]:
-        _callerRealm_, [[ScriptOrModule]]: _callerScriptOrModule_,
-        [[HostDefined]]: *undefined*<ins>, [[Metadata]]: _meta_</ins> }. 10.
-        Perform any implementation or host environment defined processing of
-        _pending_. This may include modifying the [[HostDefined]] field or any
-        other field of pending. 11. Add _pending_ at the back of the
-        <emu-xref href="#job-queue">Job Queue</emu-xref> named by _queueName_.
-        12. Return NormalCompletion(~empty~).
-      </emu-alg>
+            <emu-alg>
+                1.  Assert: Type(_queueName_) is String and its value is the name of a Job Queue recognized by this implementation.
+                2.  Assert: _job_ is the name of a Job.
+                3.  Assert: _arguments_ is a List that has the same number of elements as the number of parameters required by _job_.
+                4.  Let _callerContext_ be the running execution context.
+                5.  Let _callerRealm_ be _callerContext_'s Realm.
+                6.  Let _callerScriptOrModule_ be _callerContext_'s ScriptOrModule.
+                7.  <ins>Let _callerRec_ be EnvironmentRecord of _callerContext_'s LexicalEnvironment.</ins>
+                8.  <ins>Let _meta_ be _callerRec_.[[Metadata]].</ins>
+                9.  Let _pending_ be PendingJob { [[Job]]: _job_, [[Arguments]]: _arguments_, [[Realm]]: _callerRealm_, [[ScriptOrModule]]: _callerScriptOrModule_, [[HostDefined]]: *undefined*<ins>, [[Metadata]]: _meta_</ins> }.
+                10. Perform any implementation or host environment defined processing of _pending_. This may include modifying the [[HostDefined]] field or any other field of pending.
+                11. Add _pending_ at the back of the Job Queue named by _queueName_.
+                12. Return NormalCompletion(~empty~).
+            </emu-alg>
+        </emu-clause>
     </emu-clause>
-  </emu-clause>
 
-  <emu-clause id="sec-runjobs">
-    <h1>RunJobs ( )</h1>
+    <emu-clause id='sec-runjobs' aoid='RunJobs'>
+        <h1>RunJobs ( )</h1>
 
-    <emu-alg>
-      1. Perform ? InitializeHostDefinedRealm(). 2. In an
-      implementation-dependent manner, obtain the ECMAScript source texts (see
-      clause 10) and any associated host-defined values for zero or more
-      ECMAScript scripts and/or ECMAScript modules. For each such _sourceText_
-      and _hostDefined_, do 1. If _sourceText_ is the source code of a script,
-      then 1. Perform EnqueueJob(*"ScriptJobs"*, ScriptEvaluationJob, «
-      _sourceText_, _hostDefined_ »). 2. Else, 1. Assert: _sourceText_ is the
-      source code of a module. 2. Perform EnqueueJob(*"ScriptJobs"*,
-      TopLevelModuleEvaluationJob, « _sourceText_, _hostDefined_ »). 3. Repeat,
-      1. Suspend the running execution context and remove it from the execution
-      context stack. 2. Assert: The execution context stack is now empty. 3. Let
-      _nextQueue_ be a non-empty Job Queue chosen in an implementation-defined
-      manner. If all Job Queues are empty, the result is implementation-defined.
-      4. Let _nextPending_ be the PendingJob record at the front of _nextQueue_.
-      Remove that record from nextQueue. 5. Let _newContext_ be a new execution
-      context. 6. Set _newContext_'s Function to null. 7. Set _newContext_'s
-      Realm to _nextPending_.[[Realm]]. 8. Set _newContext_'s ScriptOrModule to
-      _nextPending_.\[\[ScriptOrModule]]. 9.
-      <ins
-        >NOTE: Absolutely unsure what to do here ¯\_(ツ)_/¯ Set _newContext_'s
-        LexicalEnvironment's EnvironmentRecord.[[Metadata]] to !
-        ObjectCreate(_nextPending_.\[\[Metadata]]).</ins
-      >
-      10. Push _newContext_ onto the execution context stack; _newContext_ is
-      now the running execution context. 11. Perform any implementation or host
-      environment defined job initialization using _nextPending_. 12. Let
-      _result_ be the result of performing the abstract operation named by
-      _nextPending_.\[\[Job]] using the elements of
-      _nextPending_.\[\[Arguments]] as its arguments. 13. If _result_ is an
-      abrupt completion, perform HostReportErrors(« _result_.\[\[Value]] »).
-    </emu-alg>
-  </emu-clause>
+        <emu-alg>
+            1. Perform ? InitializeHostDefinedRealm().
+            2. In an implementation-dependent manner, obtain the ECMAScript source texts (see clause 10) and any associated host-defined values for zero or more ECMAScript scripts and/or ECMAScript modules. For each such _sourceText_ and _hostDefined_, do
+                1. If _sourceText_ is the source code of a script, then
+                    1. Perform EnqueueJob(*"ScriptJobs"*, ScriptEvaluationJob, « _sourceText_, _hostDefined_ »).
+                2. Else,
+                    1. Assert: _sourceText_ is the source code of a module.
+                    2. Perform EnqueueJob(*"ScriptJobs"*, TopLevelModuleEvaluationJob, « _sourceText_, _hostDefined_ »).
+            3. Repeat,
+                1. Suspend the running execution context and remove it from the execution context stack.
+                2. Assert: The execution context stack is now empty.
+                3. Let _nextQueue_ be a non-empty Job Queue chosen in an implementation-defined manner. If all Job Queues are empty, the result is implementation-defined.
+                4. Let _nextPending_ be the PendingJob record at the front of _nextQueue_. Remove that record from nextQueue.
+                5. Let _newContext_ be a new execution context.
+                6. Set _newContext_'s Function to null.
+                7. Set _newContext_'s Realm to _nextPending_.[[Realm]].
+                8. Set _newContext_'s ScriptOrModule to _nextPending_.[[ScriptOrModule]].
+                9. <ins>Set _newContext_'s LexicalEnvironment's EnvironmentRecord.[[Metadata]] to ! ObjectCreate(_nextPending_.[[Metadata]]). NOTE: Absolutely unsure what to do here ¯\_(ツ)_/¯</ins>
+                10. Push _newContext_ onto the execution context stack; _newContext_ is now the running execution context.
+                11. Perform any implementation or host environment defined job initialization using _nextPending_.
+                12. Let _result_ be the result of performing the abstract operation named by _nextPending_.[[Job]] using the elements of _nextPending_.[[Arguments]] as its arguments.
+                13. If _result_ is an abrupt completion, perform HostReportErrors(« _result_.[[Value]] »).
+        </emu-alg>
+    </emu-clause>
+</emu-clause>
+
+<emu-clause id='sec-ordinary-and-exotic-objects-behaviours'>
+    <h1>Ordinary and Exotic Objects Behaviours</h1>
+
+    <emu-clause id='sec-ecmascript-function-objects'>
+        <h1>ECMAScript Function Objects</h1>
+
+        <emu-clause id='sec-ecmascript-function-objects-call-thisargument-argumentslist'>
+            <h1>[[Call]] ( _thisArgument_, _argumentsList_ )</h1>
+
+            <emu-clause id='sec-prepareforordinarycall' aoid='PrepareForOrdinaryCall'>
+                <h1>PrepareForOrdinaryCall ( _F_, _newTarget_ )</h1>
+
+                <emu-alg>
+                    1.  Assert: Type(_newTarget_) is Undefined or Object.
+                    2.  Let _callerContext_ be the running execution context.
+                    3.  Let _calleeContext_ be a new ECMAScript code execution context.
+                    4.  Set the Function of _calleeContext_ to _F_.
+                    5.  Let _calleeRealm_ be _F_.\[\[Realm]].
+                    6.  Set the Realm of _calleeContext_ to _calleeRealm_.
+                    7.  Set the ScriptOrModule of _calleeContext_ to _F_.\[\[ScriptOrModule]].
+                    8.  Let _localEnv_ be NewFunctionEnvironment(_F_, _newTarget_).
+                    9.  <ins>Perform ! PrepareCelleeEnvironment(_callerContext_, _calleeContext_).</ins>
+                    10. Set the LexicalEnvironment of _calleeContext_ to _localEnv_.
+                    11. Set the VariableEnvironment of _calleeContext_ to _localEnv_.
+                    12. If _callerContext_ is not already suspended, suspend _callerContext_.
+                    13. Push _calleeContext_ onto the execution context stack; _calleeContext_ is
+                    now the running execution context.
+                    14. NOTE: Any exception objects produced after this point are associated with _calleeRealm_.
+                    15. Return _calleeContext_.
+                </emu-alg>
+            </emu-clause>
+
+            <ins class='block'>
+                <emu-clause id='sec-preparecalleeenvironment' aoid='PrepareCelleeEnvironment'>
+                    <h1>PrepareCelleeEnvironment ( _callerContext_, _calleeContext_ )</h1>
+
+                    <p>When the abstract operation PrepareCalleeEnvironment is called with execution context _callerContext_ and execution context _calleeContext_, the following steps are taken:</p>
+
+                    <emu-alg>
+                        1. Let _callerRec_ be EnvironmentRecord of _callerContext_'s LexicalEnvironment.
+                        2. Let _calleeRec_ be EnvironmentRecord of _calleeContext_'s LexicalEnvironment.
+                        3. Set _calleeRec_.[[Metadata]] to ! ObjectCreate(_callerRec_.[[Metadata]]).
+                        4. Return NormalCompletion(~empty~).
+                    </emu-alg>
+                </emu-clause>
+            </ins>
+        </emu-clause>
+    </emu-clause>
+</emu-clause>
+
+<emu-clause id="sec-global-object">
+    <h1>The Global Object</h1>
+
+    <emu-clause id="sec-other-properties-of-the-global-object">
+        <h1>Other Properties of the Global Object</h1>
+
+        <emu-clause id="sec-environmentmetadata">
+            <h1>Reflect</h1>
+
+            <p>See <emu-xref href="#sec-environmentmetadata-object"></emu-xref>.</p>
+        </emu-clause>
+    </emu-clause>
+</emu-clause>
+
+<emu-clause id="sec-environment-metadata">
+    <h1>Environment Metadata</h1>
+
+    <emu-clause id="sec-environmentmetadata-object">
+        <h1>The EnvironmentMetadata Object</h1>
+
+        <p>The EnvironmentMetadata Object:</p>
+
+        <ul>
+            <li>is the intrinsic object <dfn>%EnvironmentMetadata%</dfn>.</li>
+            <li>is the initial value of the *"EnvironmentMetadata"* property of the global object.</li>
+            <li>is an ordinary object.</li>
+            <li>has a [[Prototype]] internal slot whose value is %Object.prototype%.</li>
+            <li>is not a function object.</li>
+            <li>does not have a [[Construct]] internal method; it cannot be used as a constructor with the `new` operator.</li>
+            <li>does not have a [[Call]] internal method; it cannot be invoked as a function.</li>
+        </ul>
+    </emu-clause>
+
+    <emu-clause id='sec-environmentmetadata.delete'>
+        <h1>EnvironmentMetadata.delete ( _propertyKey_ )</h1>
+
+        <p>When the `delete` function is called with argument _propertyKey_, the following steps are taken:</p>
+
+        <emu-alg>
+            1. Let _key_ be ? ToPropertyKey(_propertyKey_).
+            2. Let _lex_ be current execution context's LexicalEnvironment.
+            3. Let _rec_ be _lex_'s EnvironmentRecord.
+            4. Let _meta_ be _rec_.[[Metadata]].
+            5. Return ! _meta_.[[Delete]](_key_).
+        </emu-alg>
+    </emu-clause>
+
+    <emu-clause id='sec-environmentmetadata.get'>
+        <h1>EnvironmentMetadata.get ( _propertyKey_ )</h1>
+
+        <p>When the `get` function is called with argument _propertyKey_, the following steps are taken:</p>
+
+        <emu-alg>
+            1. Let _key_ be ? ToPropertyKey(_propertyKey_).
+            2. Let _lex_ be current execution context's LexicalEnvironment.
+            3. Let _rec_ be _lex_'s EnvironmentRecord.
+            4. Let _meta_ be _rec_.[[Metadata]].
+            5. Return ! _meta_.[[Get]](_key_, _meta_).
+        </emu-alg>
+    </emu-clause>
+
+    <emu-clause id='sec-environmentmetadata.has'>
+        <h1>EnvironmentMetadata.has ( _propertyKey_ )</h1>
+
+        <p>When the `has` function is called with argument _propertyKey_, the following steps are taken:</p>
+
+        <emu-alg>
+            1. Let _key_ be ? ToPropertyKey(_propertyKey_).
+            2. Let _lex_ be current execution context's LexicalEnvironment.
+            3. Let _rec_ be _lex_'s EnvironmentRecord.
+            4. Let _meta_ be _rec_.[[Metadata]].
+            5. Return ! _meta_.[[HasProperty]](_key_).
+        </emu-alg>
+    </emu-clause>
+
+    <emu-clause id='sec-environmentmetadata.propagate'>
+        <h1>EnvironmentMetadata.propagate ()</h1>
+
+        <p>When the `propagate` function is called, the following steps are taken:</p>
+
+        <emu-alg>
+            1. Let _key_ be ? ToPropertyKey(_propertyKey_).
+            2. Let _lex_ be current execution context's LexicalEnvironment.
+            3. Let _rec_ be _lex_'s EnvironmentRecord.
+            4. Let _meta_ be _rec_.[[Metadata]].
+            5. If _meta_.[[Prototype]] is *null*, then
+                1. Throw a *TypeError* exception.
+            6. Else,
+                1. Set _rec_.[[Metadata]] to _meta_.[[Prototype]].
+                2. Return NormalCompletion(~empty~).
+        </emu-alg>
+    </emu-clause>
+
+    <emu-clause id='sec-environmentmetadata.set'>
+        <h1>EnvironmentMetadata.set ( _propertyKey_, _value_ )</h1>
+
+        <p>When the `set` function is called with arguments _propertyKey_ and _value_, the following steps are taken:</p>
+
+        <emu-alg>
+            1. Let _key_ be ? ToPropertyKey(_propertyKey_).
+            2. Let _lex_ be current execution context's LexicalEnvironment.
+            3. Let _rec_ be _lex_'s EnvironmentRecord.
+            4. Let _meta_ be _rec_.[[Metadata]].
+            5. Return ! _meta_.[[Set]](_key_, _value_, _meta_).
+        </emu-alg>
+    </emu-clause>
 </emu-clause>

@@ -32,8 +32,7 @@ implementation-dependent, but probably there is a better way.
 `a.js`:
 
 ```javascript
-// The NewModuleEnvironment abstract operation sets
-// Rec.[[Metadata]] to { [[Prototype]]: null }.
+// Rec.[[Metadata]] = Object.create(null)
 
 import { b } from './b.js';
 
@@ -41,15 +40,14 @@ import { b } from './b.js';
 EnvironmentMetadata.set('answer', 42);
 
 // The PrepareForOrdinaryCall sets b’s _calleeContext_’s
-// [[Metadata]] to { [[Prototype]]: Rec.[[Metadata]] }.
+// [[Metadata]] to Object.create(Rec.[[Metadata]]).
 b(); // 42
 ```
 
 `b.js`:
 
 ```javascript
-// The NewModuleEnvironment abstract operation sets
-// Rec.[[Metadata]] to { [[Prototype]]: null }.
+// Rec.[[Metadata]] = Object.create(null)
 
 export const b = () => {
     // Rec.[[Metadata]].answer
@@ -57,10 +55,16 @@ export const b = () => {
 };
 ```
 
-[protospec]: https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/PROTOSPEC.md
-[examples]: https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/EXAMPLES.md
-[hooks]: https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/EXAMPLES.md#reliable-react-hooks
-[pragma]: https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/EXAMPLES.md#standard-way-to-define-jsx-pragma
-[zones]: https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/EXAMPLES.md#zones
-[logs]: https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/EXAMPLES.md#informative-logs
-[closures]: https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/EXAMPLES.md#eliminating-closures
+[protospec]: https://miyaokamarina.github.io/environment-metadata-proposal
+[examples]:
+    https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/EXAMPLES.md
+[hooks]:
+    https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/EXAMPLES.md#reliable-react-hooks
+[pragma]:
+    https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/EXAMPLES.md#standard-way-to-define-jsx-pragma
+[zones]:
+    https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/EXAMPLES.md#zones
+[logs]:
+    https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/EXAMPLES.md#informative-logs
+[closures]:
+    https://github.com/miyaokamarina/environment-metadata-proposal/blob/master/EXAMPLES.md#eliminating-closures

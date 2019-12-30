@@ -1,17 +1,27 @@
 {
-  "private": true,
-  "name": "template-for-proposals",
-  "description": "A repository template for ECMAScript proposals.",
-  "scripts": {
-    "build": "ecmarkup spec.emu index.html"
-  },
-  "homepage": "https://github.com/tc39/template-for-proposals#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tc39/template-for-proposals.git"
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "ecmarkup": "^3.11.5"
-  }
+    "private": true,
+    "name": "template-for-proposals",
+    "description": "A repository template for ECMAScript proposals.",
+    "scripts": {
+        "build": "ecmarkup --verbose --biblio environment-metadata-proposal.json spec.emu index.html",
+        "watch": "yarn build --watch",
+        "format": "prettier --write './**/*.{md,json,js}'"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "yarn build && yarn format"
+        }
+    },
+    "homepage": "https://github.com/tc39/template-for-proposals#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tc39/template-for-proposals.git"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "ecmarkup": "^3.16.0",
+        "husky": "^3.1.0",
+        "prettier": "^1.19.1",
+        "yarn": "^1.21.1"
+    }
 }

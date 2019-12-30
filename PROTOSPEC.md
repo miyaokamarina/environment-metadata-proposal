@@ -2,11 +2,48 @@
 
 ## 8.1.2.2 NewDeclarativeEnvironment ( _E_ )
 
+1. Let _env_ be a new Lexical Environment.
+2. Let _envRec_ be a new declarative Environment Record containing no bindings.
+3. Set _env_'s EnvironmentRecord to _envRec_.
+4. Set the outer lexical environment reference of _env_ to _E_.
+5. <ins>Let _outerRec_ be _E_'s EnvironmentRecord.</ins>
+6. <ins>Set _envRec_.\[\[Metadata]] to _outerRec_.\[\[Metadata]].</ins>
+7. Return _env_.
+
 ## 8.1.2.3 NewObjectEnvironment ( _O_, _E_ )
+
+1. Let _env_ be a new Lexical Environment.
+2. Let _envRec_ be a new object Environment Record containing _O_ as the binding object.
+3. Set _env_'s EnvironmentRecord to _envRec_.
+4. Set the outer lexical environment reference of _env_ to _E_.
+5. <ins>Let _outerRec_ be _E_'s EnvironmentRecord.</ins>
+6. <ins>Set _envRec_.\[\[Metadata]] to _outerRec_.\[\[Metadata]].</ins>
+7. Return _env_.
 
 ## 8.1.2.5 NewGlobalEnvironment ( _G_, _thisValue_ )
 
+1. Let _env_ be a new Lexical Environment.
+2. Let _objRec_ be a new object Environment Record containing _G_ as the binding object.
+3. Let _dclRec_ be a new declarative Environment Record containing no bindings.
+4. Let _globalRec_ be a new global Environment Record.
+5. Set _globalRec_.\[\[ObjectRecord]] to _objRec_.
+6. Set _globalRec_.\[\[GlobalThisValue]] to _thisValue_.
+7. Set _globalRec_.\[\[DeclarativeRecord]] to _dclRec_.
+8. Set _globalRec_.\[\[VarNames]] to a new empty List.
+9. <ins>Set _globalRec_.\[\[Metadata]] to ! ObjectCreate(**null**)</ins>.
+10. Set _env_'s EnvironmentRecord to _globalRec_.
+11. Set the outer lexical environment reference of _env_ to **null**.
+12. Return _env_.
+
 ## 8.1.2.6 NewModuleEnvironment ( _E_ )
+
+1. Let _env_ be a new Lexical Environment.
+2. Let _envRec_ be a new module Environment Record containing no bindings.
+3. Set _env_'s EnvironmentRecord to _envRec_.
+4. Set the outer lexical environment reference of _env_ to E.
+5. <ins>Let _outerRec_ be _E_'s EnvironmentRecord.</ins>
+6. <ins>Set _envRec_.\[\[Metadata]] to _outerRec_.\[\[Metadata]].</ins>
+7. Return _env_.
 
 ## 8.4.1 EnqueueJob ( _queueName_, _job_, _arguments_ )
 

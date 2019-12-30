@@ -39,10 +39,10 @@ const Component = props => {
 
 As number of JSX frameworks grows, it is necessary to fine-tune compiler to use
 various pragmas — in some cases you may need to use two different pragmas in one
-file (e.g., if you transitiononing from Vue to React or vice versa, and use
-mixed React+Vue components).
+file (e.g., if you transitioning from Vue to React or vice versa, and use mixed
+React+Vue components).
 
-Using this API, it is possible to intoroduce conventinal framework-agnostic
+Using this API, it is possible to intoroduce conventional framework-agnostic
 symbols and pragmas, which will be used by frameworks.
 
 The following code…

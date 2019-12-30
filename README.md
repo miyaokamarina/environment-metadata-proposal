@@ -1,5 +1,7 @@
 # Custom metadata for Lexical Environments and execution context stacks
 
+**Stage:** Not presented.
+
 -   [Protospec][protospec]
 -   [Examples / use cases][examples]:
     -   [Reliable React hooks][hooks]

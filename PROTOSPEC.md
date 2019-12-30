@@ -12,11 +12,11 @@
 6.  Let _callerScriptOrModule_ be _callerContext_'s ScriptOrModule.
 7.  <ins>Let _callerRec_ be EnvironmentRecord of _callerContext_'s
     LexicalEnvironment.</ins>
-8.  <ins>Let _callerMeta_ be _callerRec_.\[\[CalleeMetadata]].</ins>
+8.  <ins>Let _meta_ be _callerRec_.\[\[Metadata]].</ins>
 9.  Let _pending_ be PendingJob { \[\[Job]]: _job_, \[\[Arguments]]:
     _arguments_, \[\[Realm]]: _callerRealm_, \[\[ScriptOrModule]]:
     _callerScriptOrModule_, \[\[HostDefined]]: **undefined**<ins>,
-    \[\[CallerMetadata]]: _callerMeta_</ins> }.
+    \[\[Metadata]]: _meta_</ins> }.
 10. Perform any implementation or host environment defined processing of
     _pending_. This may include modifying the \[\[HostDefined]] field or any
     other field of pending.
@@ -51,9 +51,8 @@
     7. Set _newContext_'s Realm to _nextPending_.\[\[Realm]].
     8. Set _newContext_'s ScriptOrModule to _nextPending_.\[\[ScriptOrModule]].
     9. <ins>**NOTE: Absolutely unsure what to do here ¯\\\_(ツ)\_/¯** Set
-       _newContext_'s LexicalEnvironment's
-       EnvironmentRecord.\[\[CallerMetadata]] to !
-       ObjectCreate(_nextPending_.\[\[CallerMetadata]]).</ins>
+       _newContext_'s LexicalEnvironment's EnvironmentRecord.\[\[Metadata]] to !
+       ObjectCreate(_nextPending_.\[\[Metadata]]).</ins>
     10. Push _newContext_ onto the execution context stack; _newContext_ is now
         the running execution context.
     11. Perform any implementation or host environment defined job
@@ -74,7 +73,7 @@
 6.  Set the Realm of _calleeContext_ to _calleeRealm_.
 7.  Set the ScriptOrModule of _calleeContext_ to _F_.\[\[ScriptOrModule]].
 8.  Let _localEnv_ be NewFunctionEnvironment(_F_, _newTarget_).
-9.  <ins>Perform PrepareCelleeEnvironment(_callerContext_,
+9.  <ins>Perform ! PrepareCelleeEnvironment(_callerContext_,
     _calleeContext_).</ins>
 10. Set the LexicalEnvironment of _calleeContext_ to _localEnv_.
 11. Set the VariableEnvironment of _calleeContext_ to _localEnv_.
@@ -93,8 +92,7 @@ steps are taken:
 
 1. Let _callerRec_ be EnvironmentRecord of _callerContext_'s LexicalEnvironment.
 2. Let _calleeRec_ be EnvironmentRecord of _calleeContext_'s LexicalEnvironment.
-3. Set _calleeRec_.\[\[CallerMetadata]] to !
-   ObjectCreate(_callerRec_.\[\[CalleeMetadata]]).
+3. Set _calleeRec_.\[\[Metadata]] to ! ObjectCreate(_callerRec_.\[\[Metadata]]).
 4. Return NormalCompletion(`empty`).
 
 ## 9.3.1 \[\[Call]] ( _thisArgument_, _argumentsList_ )

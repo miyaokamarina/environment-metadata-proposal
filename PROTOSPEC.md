@@ -1,5 +1,13 @@
 # Protospec
 
+## 8.1.2.2 NewDeclarativeEnvironment ( _E_ )
+
+## 8.1.2.3 NewObjectEnvironment ( _O_, _E_ )
+
+## 8.1.2.5 NewGlobalEnvironment ( _G_, _thisValue_ )
+
+## 8.1.2.6 NewModuleEnvironment ( _E_ )
+
 ## 8.4.1 EnqueueJob ( _queueName_, _job_, _arguments_ )
 
 1.  Assert: Type(_queueName_) is String and its value is the name of a Job Queue
@@ -108,50 +116,56 @@ See 28.
 The EnvironmentMetadata object:
 
 -   is the intrinsic object _%EnvironmentMetadata%_.
--   is the initial value of the **"EnvironmentMetadata"** property of the global object.
+-   is the initial value of the **"EnvironmentMetadata"** property of the global
+    object.
 -   is an ordinary object.
 -   has a \[\[Prototype]] internal slot whose value id %Object.prototype%.
 -   is not a function object.
--   does not have a \[\[Construct]] internal method; it cannot be used as a constructor with the new operator.
--   does not have a \[\[Call]] internal method; it cannot be invoked as a function.
+-   does not have a \[\[Construct]] internal method; it cannot be used as a
+    constructor with the new operator.
+-   does not have a \[\[Call]] internal method; it cannot be invoked as a
+    function.
 
 #### 28.1.1 EnvironmentMetadata.has ( _propertyKey_ )
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
 2. Let _lex_ be current execution context's LexicalEnvironment.
 3. Let _rec_ be _lex_'s EnvironmentRecord.
-3. Let _meta_ be _rec_.\[\[Metadata]].
-2. Return ! _meta_.\[\[HasProperty]](_key_).
+4. Let _meta_ be _rec_.\[\[Metadata]].
+5. Return ! _meta_.\[\[HasProperty]](_key_).
 
 #### 28.1.2 EnvironmentMetadata.get ( _propertyKey_ )
 
-When the **`get`** function is called with argument _propertyKey_, the following steps are taken:
+When the **`get`** function is called with argument _propertyKey_, the following
+steps are taken:
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
 2. Let _lex_ be current execution context's LexicalEnvironment.
 3. Let _rec_ be _lex_'s EnvironmentRecord.
-3. Let _meta_ be _rec_.\[\[Metadata]].
-4. Return ! _meta_.\[\[Get]](_key_, _meta_).
+4. Let _meta_ be _rec_.\[\[Metadata]].
+5. Return ! _meta_.\[\[Get]](_key_, _meta_).
 
 #### 28.1.3 EnvironmentMetadata.set ( _propertyKey_, _value_ )
 
-When the **`set`** function is called with arguments _propertyKey_ and _value_, the following steps are taken:
+When the **`set`** function is called with arguments _propertyKey_ and _value_,
+the following steps are taken:
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
 2. Let _lex_ be current execution context's LexicalEnvironment.
 3. Let _rec_ be _lex_'s EnvironmentRecord.
-3. Let _meta_ be _rec_.\[\[Metadata]].
-4. Return ! _meta_.\[\[Set]](_key_, _value_, _meta_).
+4. Let _meta_ be _rec_.\[\[Metadata]].
+5. Return ! _meta_.\[\[Set]](_key_, _value_, _meta_).
 
 #### 28.1.4 EnvironmentMetadata.delete ( _propertyKey_ )
 
-When the **`delete`** function is called with argument _propertyKey_, the following steps are taken:
+When the **`delete`** function is called with argument _propertyKey_, the
+following steps are taken:
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
 2. Let _lex_ be current execution context's LexicalEnvironment.
 3. Let _rec_ be _lex_'s EnvironmentRecord.
-3. Let _meta_ be _rec_.\[\[Metadata]].
-2. Return ! _meta_.\[\[Delete]](_key_).
+4. Let _meta_ be _rec_.\[\[Metadata]].
+5. Return ! _meta_.\[\[Delete]](_key_).
 
 #### 28.1.5 EnvironmentMetadata.propagate ()
 
@@ -160,9 +174,9 @@ When the **`propagate`** function is called, the following steps are taken:
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
 2. Let _lex_ be current execution context's LexicalEnvironment.
 3. Let _rec_ be _lex_'s EnvironmentRecord.
-3. Let _meta_ be _rec_.\[\[Metadata]].
-4. If _meta_.\[\[Prototype]] is **null**, then
+4. Let _meta_ be _rec_.\[\[Metadata]].
+5. If _meta_.\[\[Prototype]] is **null**, then
     1. Throw a **TypeError** exception.
-5. Else,
+6. Else,
     1. Set _rec_.\[\[Metadata]] to _meta_.\[\[Prototype]].
     2. Return NormalCompletion(`empty`).

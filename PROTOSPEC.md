@@ -97,48 +97,48 @@ steps are taken:
 
 ## 9.3.1 \[\[Call]] ( _thisArgument_, _argumentsList_ )
 
-## ?? EnvironmentMetadata
+## <ins>28 Environment Metadata</ins>
 
-**TODO:** _New other property of Global Object._
+### <ins>28.2 The EnvironmentMetadata Constructor</ins>
 
-## <ins>?? SetEnvironmentMetadata ( _propertyKey_, _value_ )</ins>
+The EnvironmentMetadata constructor:
+
+-   is the intrinsic object _%EnvironmentMetadata%_.
+-   is the initial value of the **"EnvironmentMetadata"** property of the global object.
+-   is not intended to be called as a function.
+-   is not intended to be used with the **`new`** operator.
+-   is not intended to be subclassed.
+-   may be used as the value of an **`extends`** clause of a class definition but a **`super`** call to it will cause an exception.
+
+### <ins>28.3 Properties of the EnvironmentMetadata Contructor</ins>
+
+### <ins>28.4 Properties of the EnvironmentMetadata Prototype Object</ins>
+
+### <ins>28.5 Properties of the EnvironmentMetadata Instances</ins>
+
+## <ins>?? SetEnvironmentMetadataProperty ( _meta_, _propertyKey_, _value_ )</ins>
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
-2. Let _envRec_ be EnvironmentRecord of current execution context's
-   LexicalEnvironment.
-3. Let _callerMeta_ be _envRec_.\[\[CallerMetadata]].
-4. Let _calleeMeta_ be _envRec_.\[\[CalleeMetadata]].
-5. Perform ! _callerMeta_.\[\[Set]](_key_, _value_, _callerMeta_).
-6. Perform ! _calleeMeta_.\[\[Set]](_key_, _value_, _calleeMeta_).
-7. Return NormalCompletion(`empty`).
+2. Perform ! _meta_.\[\[Set]](_key_, _value_, _meta_).
+3. Return NormalCompletion(`empty`).
 
 > **NOTE:** A property must be set in both caller and callee metadata. Caller
 > metadata takes priority when resding properties using HasEnvironmentMetadata
 > and GetEnvironmentMetadata, and callee metadata used to inherit from when
 > passing to functions called from current context.
 
-## <ins>?? HasEnvironmentMetadata ( _propertyKey_ )</ins>
+## <ins>?? HasEnvironmentMetadataProperty ( _meta_, _propertyKey_ )</ins>
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
-2. Let _envRec_ be EnvironmentRecord of current execution context's
-   LexicalEnvironment.
-3. Let _callerMeta_ be _envRec_.\[\[CallerMetadata]].
-4. Let _calleeMeta_ be _envRec_.\[\[CalleeMetadata]].
-5. If ! _callerMeta_.\[\[HasProperty]](_key_) is **true**, then
-    1. Return **true**.
-6. Else,
-    1. Return ! _calleeMeta_.\[\[HasProperty]](_key_).
+2. Return ! _meta_.\[\[HasProperty]](_key_).
 
-## <ins>?? GetEnvironmentMetadata ( _propertyKey_ )</ins>
+## <ins>?? GetEnvironmentMetadataProperty ( _meta_, _propertyKey_ )</ins>
 
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
-2. Let _envRec_ be EnvironmentRecord of current execution context's
-   LexicalEnvironment.
-3. Let _callerMeta_ be _envRec_.\[\[CallerMetadata]].
-4. Let _calleeMeta_ be _envRec_.\[\[CalleeMetadata]].
-5. If ! _callerMeta_.\[\[HasProperty]](_key_) is **true**, then
-    1. Return ! _callerMeta_.\[\[Get]](_key_, _callerMeta_).
-6. Else,
-    1. Return ! _calleeMeta_.\[\[Get]](_key_, _calleeMeta_).
+2. Return ! _meta_.\[\[Get]](_key_, _meta_).
 
-## ?? DeleteEnvironmentMetadata ( _propertyKey_ )
+## <ins>?? DeleteEnvironmentMetadataProperty ( _meta_, _propertyKey_ )</ins>
+
+## <ins>?? GetParentEnvironmentMetadata ( _meta_ )</ins>
+
+## <ins>?? PropagateEnvironmentMetadata ( _meta_ )</ins>

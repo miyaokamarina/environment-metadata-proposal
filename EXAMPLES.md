@@ -96,6 +96,36 @@ API.
 
 **TODO:** Provide minimal example.
 
+```javascript
+// a.js
+import { logger } from '@foo/bar';
+
+logger.scope('a.js');
+
+const doStuff = () => {
+    // Do stuff.
+    logger.log('Stuff done.');
+};
+
+element.addEventListener('click', () => {
+    logger.scope('element@click');
+    doStuff();
+});
+
+api.get('https://example.com/api/v1/init-stuff').then(() => {
+    logger.scope('api :: init-stuff');
+    doStuff();
+});
+```
+
+Depending on how the logger is implemented, the `log` function called from
+`doStuff` may print the following lines:
+
+-   `[a.js] [element@click] Stuff done.` — when `doStuff` was called from event
+    listenter.
+-   `[a.js] [api :: init-stuff] Stuff done.` — when `doStuff` was called from
+    the Promise callback.
+
 ### Eliminating closures
 
 Closures\* may be unwanted in some cases due to its overheads. This API allows

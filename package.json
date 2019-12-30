@@ -1,7 +1,7 @@
 {
     "private": true,
-    "name": "template-for-proposals",
-    "description": "A repository template for ECMAScript proposals.",
+    "name": "environment-metadata-proposal",
+    "description": "Custom metadata for Lexical Environments and execution context stacks.",
     "scripts": {
         "build": "ecmarkup --verbose --biblio environment-metadata-proposal.json spec.emu index.html",
         "watch": "yarn build --watch",
@@ -12,11 +12,8 @@
             "pre-commit": "yarn build && yarn format"
         }
     },
-    "homepage": "https://github.com/tc39/template-for-proposals#readme",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/tc39/template-for-proposals.git"
-    },
+    "homepage": "https://miyaokamarina.github.io/environment-metadata-proposal",
+    "repository": "miyaokamarina/environment-metadata-proposal",
     "license": "MIT",
     "devDependencies": {
         "ecmarkup": "^3.16.0",

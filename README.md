@@ -12,7 +12,7 @@
 
 ### The name
 
-**Environment Metadata**: LGTM, but probably there are better alternatives.
+**Environment Metadata:** LGTM, but probably there are better alternatives.
 
 ### How to work with async callbacks
 

@@ -48,30 +48,29 @@ symbols and pragmas, which will be used by frameworks.
 The following code…
 
 ```jsx
-import { symbolFactory, symbolFragment } from 'universal-jsx';
+import { jsx } from 'universal-jsx';
 
 // Custom JSX factory and fragment symbols ↓
 import { h, Fragment } from '@foo/bar';
 
-EnvironmentMetadata.set(symbolFactory, h);
-EnvironmentMetadata.set(symbolFragment, Fragment);
+jsx(h, Fragment);
 
 const x = (
     <>
         Hello, world<em>‼</em>
     </>
 );
+
 const y = <a href='https://example.com/'>{x}</a>;
 ```
 
 … transpiles to…
 
 ```javascript
-import { symbolFactory, symbolFragment, $h, $Fragment } from 'universal-jsx';
+import { jsx, $h, $Fragment } from 'universal-jsx';
 import { h, Fragment } from '@foo/bar';
 
-EnvironmentMetadata.set(symbolFactory, h);
-EnvironmentMetadata.set(symbolFragment, Fragment);
+jsx(h, Fragment);
 
 const x = $h($Fragment, null, 'Hello, world', $h('em', null, '‼'));
 const y = $h('a', { href: 'https://example.com/' }, x);
@@ -85,11 +84,6 @@ environment metadata approach allows
    environment in semi-standard way,
 2. to redefine JSX factory and fragment in nested lexical environments. E.g., in
    edge cases, when usage of multiple JSX libraries in one file is desired.
-
-> **NOTE:** What if I want to write the `setupJsx(factory, fragment)` helper and
-> use it instead of direct `EnvironmentMetadata.*` calls? Currently, it cannot
-> change callee environment, we need a way to propagate **some** environment
-> changes from callee back to caller.
 
 ### Zones
 

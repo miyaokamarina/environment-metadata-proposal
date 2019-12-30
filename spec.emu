@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<meta charset="utf8" />
+
+<link rel="stylesheet" href="./spec.css" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css"
+/>
+<script src="./spec.js"></script>
+
+<emu-biblio href="./biblio.json"></emu-biblio>
+
+<pre class="metadata">
+    title: Environment Metadata
+    stage: NaN
+    contributors: Ecma International
+</pre>
+
+<emu-clause id="sec-executable-code-and-execution-contexts">
+  <h1>Executable Code and Execution Contexts</h1>
+
+  <emu-clause id="sec-lexical-environments">
+    <h1>Lexical Environments</h1>
+
+    <emu-clause id="sec-lexical-environment-operations">
+      <h1>Lexical Environment Operations</h1>
+
+      <emu-clause id="sec-newdeclarativeenvironment">
+        <h1>NewDeclarativeEnvironment ( _E_ )</h1>
+
+        <emu-alg>
+          1. Let _env_ be a new Lexical Environment. 2. Let _envRec_ be a new
+          declarative Environment Record containing no bindings. 3. Set _env_'s
+          EnvironmentRecord to _envRec_. 4. Set the outer lexical environment
+          reference of _env_ to _E_. 5.
+          <ins>Let _outerRec_ be _E_'s EnvironmentRecord.</ins> 6.
+          <ins>Set _envRec_.[[Metadata]] to _outerRec_.[[Metadata]].</ins>
+          7. Return _env_.
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-newobjectenvironment">
+        <h1>NewObjectEnvironment ( _O_, _E_ )</h1>
+
+        <emu-alg>
+          1. Let _env_ be a new Lexical Environment. 2. Let _envRec_ be a new
+          object Environment Record containing _O_ as the binding object. 3. Set
+          _env_'s EnvironmentRecord to _envRec_. 4. Set the outer lexical
+          environment reference of _env_ to _E_. 5.
+          <ins>Let _outerRec_ be _E_'s EnvironmentRecord.</ins> 6.
+          <ins>Set _envRec_.[[Metadata]] to _outerRec_.[[Metadata]].</ins>
+          7. Return _env_.
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-newglobalenvironment">
+        <h1>NewGlobalEnvironment ( _G_, _thisValue_ )</h1>
+
+        <emu-alg>
+          1. Let _env_ be a new Lexical Environment. 2. Let _objRec_ be a new
+          object Environment Record containing _G_ as the binding object. 3. Let
+          _dclRec_ be a new declarative Environment Record containing no
+          bindings. 4. Let _globalRec_ be a new global Environment Record. 5.
+          Set _globalRec_.[[ObjectRecord]] to _objRec_. 6. Set
+          _globalRec_.[[GlobalThisValue]] to _thisValue_. 7. Set
+          _globalRec_.[[DeclarativeRecord]] to _dclRec_. 8. Set
+          _globalRec_.[[VarNames]] to a new empty List. 9.
+          <ins>Set _globalRec_.[[Metadata]] to ! ObjectCreate(*null*)</ins>. 10.
+          Set _env_'s EnvironmentRecord to _globalRec_. 11. Set the outer
+          lexical environment reference of _env_ to *null*. 12. Return _env_.
+        </emu-alg>
+      </emu-clause>
+
+      <emu-clause id="sec-newmoduleenvironment">
+        <h1>NewModuleEnvironment ( _E_ )</h1>
+
+        <emu-alg>
+          1. Let _env_ be a new Lexical Environment. 2. Let _envRec_ be a new
+          module Environment Record containing no bindings. 3. Set _env_'s
+          EnvironmentRecord to _envRec_. 4. Set the outer lexical environment
+          reference of _env_ to E. 5.
+          <ins>Let _outerRec_ be _E_'s EnvironmentRecord.</ins> 6.
+          <ins>Set _envRec_.[[Metadata]] to _outerRec_.[[Metadata]].</ins>
+          7. Return _env_.
+        </emu-alg>
+      </emu-clause>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-jobs-and-job-queues">
+    <h1>Jobs and Job Queues</h1>
+
+    <p>
+      A <dfn id="job-queue">Job Queue</dfn> is a FIFO queue of PendingJob
+      records. Each Job Queue has a name and the full set of available Job
+      Queues are defined by an ECMAScript implementation. Every ECMAScript
+      implementation has at least the Job Queues defined in
+      <emu-xref href="#table-26"></emu-xref>.
+    </p>
+
+    <emu-clause id="sec-enqueuejob">
+      <h1>EnqueueJob ( _queueName_, _job_, _arguments_ )</h1>
+
+      <emu-alg>
+        1. Assert: Type(_queueName_) is String and its value is the name of a
+        Job Queue recognized by this implementation. 2. Assert: _job_ is the
+        name of a Job. 3. Assert: _arguments_ is a List that has the same number
+        of elements as the number of parameters required by _job_. 4. Let
+        _callerContext_ be the running execution context. 5. Let _callerRealm_
+        be _callerContext_'s Realm. 6. Let _callerScriptOrModule_ be
+        _callerContext_'s ScriptOrModule. 7.
+        <ins
+          >Let _callerRec_ be EnvironmentRecord of _callerContext_'s
+          LexicalEnvironment.</ins
+        >
+        8. <ins>Let _meta_ be _callerRec_.[[Metadata]].</ins> 9. Let _pending_
+        be PendingJob { [[Job]]: _job_, [[Arguments]]: _arguments_, [[Realm]]:
+        _callerRealm_, [[ScriptOrModule]]: _callerScriptOrModule_,
+        [[HostDefined]]: *undefined*<ins>, [[Metadata]]: _meta_</ins> }. 10.
+        Perform any implementation or host environment defined processing of
+        _pending_. This may include modifying the [[HostDefined]] field or any
+        other field of pending. 11. Add _pending_ at the back of the
+        <emu-xref href="#job-queue">Job Queue</emu-xref> named by _queueName_.
+        12. Return NormalCompletion(~empty~).
+      </emu-alg>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-runjobs">
+    <h1>RunJobs ( )</h1>
+
+    <emu-alg>
+      1. Perform ? InitializeHostDefinedRealm(). 2. In an
+      implementation-dependent manner, obtain the ECMAScript source texts (see
+      clause 10) and any associated host-defined values for zero or more
+      ECMAScript scripts and/or ECMAScript modules. For each such _sourceText_
+      and _hostDefined_, do 1. If _sourceText_ is the source code of a script,
+      then 1. Perform EnqueueJob(*"ScriptJobs"*, ScriptEvaluationJob, «
+      _sourceText_, _hostDefined_ »). 2. Else, 1. Assert: _sourceText_ is the
+      source code of a module. 2. Perform EnqueueJob(*"ScriptJobs"*,
+      TopLevelModuleEvaluationJob, « _sourceText_, _hostDefined_ »). 3. Repeat,
+      1. Suspend the running execution context and remove it from the execution
+      context stack. 2. Assert: The execution context stack is now empty. 3. Let
+      _nextQueue_ be a non-empty Job Queue chosen in an implementation-defined
+      manner. If all Job Queues are empty, the result is implementation-defined.
+      4. Let _nextPending_ be the PendingJob record at the front of _nextQueue_.
+      Remove that record from nextQueue. 5. Let _newContext_ be a new execution
+      context. 6. Set _newContext_'s Function to null. 7. Set _newContext_'s
+      Realm to _nextPending_.[[Realm]]. 8. Set _newContext_'s ScriptOrModule to
+      _nextPending_.\[\[ScriptOrModule]]. 9.
+      <ins
+        >NOTE: Absolutely unsure what to do here ¯\_(ツ)_/¯ Set _newContext_'s
+        LexicalEnvironment's EnvironmentRecord.[[Metadata]] to !
+        ObjectCreate(_nextPending_.\[\[Metadata]]).</ins
+      >
+      10. Push _newContext_ onto the execution context stack; _newContext_ is
+      now the running execution context. 11. Perform any implementation or host
+      environment defined job initialization using _nextPending_. 12. Let
+      _result_ be the result of performing the abstract operation named by
+      _nextPending_.\[\[Job]] using the elements of
+      _nextPending_.\[\[Arguments]] as its arguments. 13. If _result_ is an
+      abrupt completion, perform HostReportErrors(« _result_.\[\[Value]] »).
+    </emu-alg>
+  </emu-clause>
+</emu-clause>

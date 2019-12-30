@@ -167,6 +167,9 @@ The EnvironmentMetadata object:
 
 #### 28.1.1 EnvironmentMetadata.has ( _propertyKey_ )
 
+When the **`has`** function is called with argument _propertyKey_, the following
+steps are taken:
+
 1. Let _key_ be ? ToPropertyKey(_propertyKey_).
 2. Let _lex_ be current execution context's LexicalEnvironment.
 3. Let _rec_ be _lex_'s EnvironmentRecord.
